@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chấm đề Ianta</title>
+<style>
+:root{
+  --bg:#f7f7fb;--card:#fff;--text:#1a1a1a;--sub:#666;--accent:#2563eb;--border:#e2e2ea;--ok:#16a34a;--bad:#dc2626;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#111318;--card:#1b1e26;--text:#eee;--sub:#aaa;--accent:#60a5fa;--border:#2a2d36;}
+}
+:root[data-theme="dark"]{--bg:#111318;--card:#1b1e26;--text:#eee;--sub:#aaa;--accent:#60a5fa;--border:#2a2d36;}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;}
+h1{font-size:1.2rem;margin:0 0 12px;}
+textarea{width:100%;min-height:220px;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--text);font-size:14px;resize:vertical;}
+button{margin-top:10px;padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-size:15px;cursor:pointer;}
+button:active{opacity:.85;}
+.result{margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;overflow-x:auto;}
+.result h3{margin:0 0 6px;font-size:1rem;}
+.pack{font-family:ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;line-height:1.6;font-size:14.5px;}
+.warn{color:var(--sub);font-size:13px;margin-top:8px;}
+.dtline{font-size:13.5px;color:var(--sub);}
+</style>
+</head>
+<body>
+<h1>📚 Chấm đề Lịch sử — "Trật tự hai cực Ianta"</h1>
+<div class="dtline">Dán toàn bộ đề (đúng định dạng bạn hay copy) vào ô dưới, bấm Chấm.</div>
+<textarea id="inp" placeholder="Dán đề vào đây..."></textarea><br>
+<button onclick="run()">✅ Chấm đáp án</button>
+<div id="out"></div>
+ 
+<script>
+function norm(s){return (s||'').toLowerCase().normalize('NFC').replace(/[""'’“”\.,;:!?()]/g,'').replace(/\s+/g,' ').trim();}
+function jac(a,b){var ta=new Set(norm(a).split(' ')),tb=new Set(norm(b).split(' '));var i=0;ta.forEach(function(t){if(tb.has(t))i++;});var u=new Set([...ta,...tb]).size;return u?i/u:0;}
+ 
+var ANS1=["Trung Quốc.","Liên Xô, Mĩ, Anh.","Anh, Pháp, Mĩ và Liên Xô.","Ianta (Liên Xô).","Các nước phương Tây.",
+"Man ta (Địa Trung Hải).","Các nước Đồng minh thỏa thuận khu vực đóng quân và phân chia phạm vi ảnh hưởng.",
+"Áo và Phần Lan.","không có xung đột trực tiếp bằng quân sự giữa Liên Xô và Mĩ",
+"Hợp tác kinh tế, thu hút vốn đầu tư và ứng dụng khoa học - kĩ thuật.",
+"Chiến tranh thế giới thứ hai bước vào giai đoạn kết thúc.",
+"Tiêu diệt tận gốc chủ nghĩa phát xít Đức và chủ nghĩa quân phiệt Nhật.",
+"Thế giới bị chia thành hai cực, hai phe.",
+"Đông Nam Á vẫn thuộc phạm vi ảnh hưởng của các nước phương Tây.",
+"Những quyết định của Hội nghị Ianta và thỏa thuận sau đó của ba cường quốc.",
+"để lại hậu quả nghiêm trọng cho nhân loại.","Bắc Triều Tiên",
+"Cuộc chiến tranh xâm lược Trung Quốc của Mĩ.","Mĩ.",
+"phân chia thành quả chiến thắng giữa các nước thắng trận",
+"Trật tự hai cực I-an-ta bị sụp đổ.","Sự đối đầu quyết liệt giữa hai cực trong trật tự Ianta.",
+"Thực chất là phân chia phạm vi ảnh hưởng giữa Mĩ và Liên Xô.",
+"Nhanh chóng khắc phục hậu quả của chiến tranh.",
+"tình hình an ninh thế giới bất ổn, ảnh hưởng đến phát triển kinh tế",
+"chấm dứt Chiến tranh lạnh.",
+"Xu thế hòa hoãn, toàn cầu hóa và ảnh hưởng của cuộc Cách mạng Công nghiệp lần thứ ba.",
+"Chạy đua vũ trang khiến cả Liên Xô và Mĩ tốn kém, suy yếu, buộc hai bên phải tự điều chỉnh từng bước hạn chế căng thẳng.",
+"Thắng lợi của phong trào giải phóng dân tộc và sự ra đời của hàng loạt các quốc gia độc lập.",
+"Sự sụp đổ chế độ xã hội chủ nghĩa của các nước Đông Âu và Liên Xô."];
+ 
+var B={
+B1:[["Mục đích chính của Liên hợp quốc là giải quyết các vấn đề hợp tác kinh tế",0],
+["Liên hợp quốc giải quyết thành công tất cả các tranh chấp, xung đột giữa các quốc gia",1],
+["Nguyên tắc hoạt động của Liên hợp quốc phù hợp với xu thế phát triển của thế giới",0],
+["Liên hợp quốc góp phần thúc đẩy việc ký kết Hiệp định Paris (1973) về Việt Nam",0]],
+B2:[["Những quyết định quan trọng của hội nghị I-an-ta và những thỏa thuận sau đó của ba cường quốc đã trở thành khuôn khổ của trật tự thế giới mới",1],
+["Hội nghị cấp cao I-an-ta diễn ra sau khi Chiến tranh thế giới thứ hai kết thúc",0],
+["Tác động quan trọng nhất của Hội nghị I-an-ta đến quan hệ quốc tế xuất phát từ sự phân chia phạm vi thế lực của Mỹ và Liên Xô",1],
+["Những quyết định của Hội nghị I-an-ta đã xác lập cục diện hai cực, hai phe",0],
+["Đoạn tư liệu đánh giá tác động của Hội nghị I-an-ta đến khuôn khổ trật tự thế giới sau Chiến tranh thế giới thứ hai.",1]],
+B_VT38:[["Sau hội nghị Ianta (2/1945), phong trào giải phóng dân tộc ở các nước Đông Nam Á, Tây Á, Nam Á nhận được sự giúp đỡ của các nước phương Tây",0],
+["Bán đảo Triều Tiên bị chia cắt có nguồn gốc từ những quyết định của hội nghị Ianta (2/1945)",1],
+["Nội chiến ở Trung Quốc (1946-1949) không chịu tác động từ những quyết định của hội nghị Ianta (2/1945)",1],
+["Theo quyết định của hội nghị Ianta (2/1945), Mĩ và Liên Xô có quyền chiếm đóng Nhật Bản",0]],
+B_XAKHALIN:[["Liên Xô khôi phục được những quyền lợi đã mất của nước Nga trong cuộc chiến tranh Nga-Nhật (1904-1905) là do chấp nhận tham chiến chống Nhật ở châu Á",1],
+["Liên Xô tham chiến chống Nhật đã thúc đẩy thời cơ khách quan thuận lợi đối với phong trào giải phóng dân tộc của một số nước châu Á",1],
+["Các nước Mĩ, Anh đồng ý khôi phục lại quyền lợi của Liên Xô ở khu vực Đông Bắc Á nhằm kiềm chế ảnh hưởng của Trung Quốc",0],
+["Tranh chấp biển đảo giữa Nga và Nhật hiện nay ở khu vực Đông Bắc Á có nguồn gốc sâu xa từ hội nghị I an ta",1]],
+B_DUCTRUNGLAP:[["Theo nghị quyết của Hội nghị Ianta, quân đội của các nước Anh, Pháp, Mĩ và Liên Xô sẽ chiếm đóng nước Đức",1],
+["Những quyết định của Hội nghị Ianta (2-1945) đã phân chia châu Âu thành hai hệ thống xã hội đối lập là Tây Âu: TBCN và Đông Âu: XHCN",0],
+["Các nước Đồng minh thỏa thuận chia Đức thành hai nước Đông Đức và Tây Đức",0],
+["Thỏa thuận đóng quân và phân chia phạm vi ảnh hưởng giữa ba cường quốc trong Hội nghị Ianta thực chất là phân chia phạm vi ảnh hưởng giữa Mĩ và Liên Xô",1]],
+B3:[["Trật tự hai cực I-an-ta sụp đổ là do sự phát triển mạnh mẽ của nền kinh tế Mỹ và Tây Âu",0],
+["Xu thế toàn cầu hoá làm cho tình trạng chạy đua vũ trang của Mỹ và Liên Xô không còn phù hợp",1],
+["Trật tự thế giới hai cực I-an-ta sụp đổ gắn liền với sự khủng hoảng, suy yếu và sụp đổ của Liên Xô",1],
+["Sự vươn lên của các nước đang phát triển khiến cho Mỹ suy yếu, không còn đủ sức chạy đua kinh tế",0]],
+B4:[["Mỹ vẫn là cường quốc số một thế giới và quyết định toàn bộ quan hệ quốc tế",0],
+["Trung Quốc trỗi dậy mạnh mẽ và trở thành một cực quan trọng trong xu thế đa cực",1],
+["Nhật Bản, Trung Quốc, Liên bang Nga trở thành các cường quốc, dẫn đến tình trạng đối đầu căng thẳng",0],
+["Liên minh châu Âu, Nhật Bản đều vươn lên và trở thành các trung tâm kinh tế lớn của thế giới",1]],
+B5A:[["thành công của Hội nghị I-an-ta là đưa đến sự ra đời của tổ chức Liên Hợp Quốc",1],
+["Sau Hội nghị I-an-ta quan hệ Mĩ Liên Xô đã thay đổi theo chiều hướng tích cực",0],
+["Tham dự hội nghị I-an-ta gồm nguyên thủ các nước Anh, Mĩ, Liên Xô",1],
+["quyết định của Hội nghị I-an-ta gây khó khăn cho phong trào giải phóng dân tộc ở Đông Nam Á",1]],
+B5B:[["thành công của Hội nghị Ianta là đưa đến sự thành lập tổ chức Liên hợp quốc",1],
+["Sau Hội nghị Ianta quan hệ giữa Mỹ Liên Xô ngày càng thay đổi theo chiều hướng tích cực",0],
+["Tham dự Hội nghị Ianta gồm nguyên thủ các nước Mỹ, Anh, và Liên Xô",1],
+["quyết định của Hội nghị Ianta gây khó khăn cho phong trào giải phóng dân tộc ở Đông Nam Á",0]],
+B6:[["nhắc đến mục đích của Liên hợp quốc là ngăn chặn các cuộc xung đột có quy mô toàn cầu trong tương lai",0],
+["nhắc đến thành tựu của Liên hợp quốc trong công cuộc giải phóng phụ nữ cũng như những hoạt động nhân đạo",0],
+["nhắc đến nguy cơ của Liên hợp quốc hiện nay và các biện pháp để làm mới bản thân",0],
+["nhắc đến vai trò của Liên hợp quốc là góp phần ngăn chặn, đẩy lùi thảm họa chiến tranh",1]],
+B7:[["Toàn vẹn lãnh thổ và độc lập chính trị là những quyền dân tộc cơ bản của một quốc gia, được Liên hợp quốc tôn trọng",1],
+["Liên hợp quốc tôn trọng quyền tự quyết của các dân tộc thông qua nguyên tắc Không can thiệp vào công việc nội bộ của các nước",1],
+["Các nguyên tắc hoạt động của Liên hợp quốc được quy định đầy đủ tại Hiến chương Liên hợp quốc năm 1945",1],
+["Quan điểm về bình đẳng chủ quyền giữa các quốc gia là quan điểm lần đầu tiên xuất hiện trong lịch sử thế giới",0]],
+B8:[["Sức mạnh tổng hợp của các cường quốc sẽ góp phần định hình trật tự thế giới mới",1],
+["Anh, Pháp ngày càng trở thành những cực lớn nhất trong trật tự thế giới đa cực",0],
+["Sự phát triển của cách mạng khoa học kĩ thuật là nhân tố tác động đến hình thành trật tự thế giới mới",1],
+["Đoạn tư liệu trên đề cập đến nội dung chính là Trật tự thế giới hai cực I-an-ta",0]],
+B9:[["Thực lực kinh tế và khoa học kĩ thuật có vai trò quan trọng đối với sự phát triển của một quốc gia",1],
+["Tình trạng đối đầu về chính trị quân sự của Mỹ và Liên Xô trong Chiến tranh lạnh khiến cho hai nước chịu nhiều tổn thất",1],
+["Đoạn tư liệu thể hiện xu thế phát triển chính của thế giới sau Chiến tranh lạnh",1],
+["Hợp tác về kinh tế chính trị làm suy yếu tiềm lực phát triển của từng nước",0]],
+B10:[["Lí do thúc đẩy Tổng thống Mỹ Bút-sơ gặp Goóc-ba-chốp là muốn chấm dứt Chiến tranh lạnh",1],
+["Phát biểu đánh dấu kết thúc hoàn toàn cuộc đối đầu quân sự tại châu Âu",0],
+["ngưỡng cửa của một kỉ nguyên hoàn toàn mới đề cập đến kỉ nguyên toàn cầu hoá",0],
+["Cuộc gặp nhằm mục đích tăng cường hợp tác thương mại giữa hai quốc gia",0]]
+};
+ 
+var QBANK1=[
+["đặc trưng lớn nhất của trật tự thế giới","Thế giới bị chia thành hai cực, hai phe."],
+["không có sự tham gia của quốc gia nào","Trung Quốc."],
+["được triệu tập trong bối cảnh lịch sử nào","Chiến tranh thế giới thứ hai bước vào giai đoạn kết thúc."],
+["chủ nghĩa li khai","tình hình an ninh thế giới bất ổn, ảnh hưởng đến phát triển kinh tế"],
+["đông nam á thuộc phạm vi ảnh hưởng của","Các nước phương Tây."],
+[["cuộc gặp gỡ không chính thức","ở đâu"],"Man ta (Địa Trung Hải)."],
+["việt nam có những thời cơ gì","Hợp tác kinh tế, thu hút vốn đầu tư và ứng dụng khoa học - kĩ thuật."],
+["thống nhất nội dung nào dưới đây","Tiêu diệt tận gốc chủ nghĩa phát xít Đức và chủ nghĩa quân phiệt Nhật."],
+["không phải là quyết định của hội nghị ianta","Nhanh chóng khắc phục hậu quả của chiến tranh."],
+["khác biệt cơ bản giữa","không có xung đột trực tiếp bằng quân sự giữa Liên Xô và Mĩ"],
+["11-2-1945 được tổ chức tại đâu","Ianta (Liên Xô)."],
+["quan tâm nhiều nhất khi đến tham dự hội nghị ianta","phân chia thành quả chiến thắng giữa các nước thắng trận"],
+["chiếm đóng nhật bản và nam triều tiên","Mĩ."],
+["mĩ không có quyền lợi ở","Bắc Triều Tiên"],
+["nguyên thủ của những quốc gia nào","Liên Xô, Mĩ, Anh."],
+["thỏa thuận đóng quân và phân chia phạm vi ảnh hưởng giữa ba cường quốc","Thực chất là phân chia phạm vi ảnh hưởng giữa Mĩ và Liên Xô."],
+["nato","Sự đối đầu quyết liệt giữa hai cực trong trật tự Ianta."],
+["năm 1991 diễn ra sự kiện gì","Trật tự hai cực I-an-ta bị sụp đổ."],
+["cùng tuyên bố","chấm dứt Chiến tranh lạnh."],
+["hai nước trung lập là","Áo và Phần Lan."],
+["phản ánh đúng quyết định của hội nghị ianta","Các nước Đồng minh thỏa thuận khu vực đóng quân và phân chia phạm vi ảnh hưởng."],
+["trở lại xâm lược đông dương","Đông Nam Á vẫn thuộc phạm vi ảnh hưởng của các nước phương Tây."],
+["không chịu tác động của cuộc chiến tranh lạnh","Cuộc chiến tranh xâm lược Trung Quốc của Mĩ."],
+["giải giáp chủ nghĩa phát xít ở nước đức","Anh, Pháp, Mĩ và Liên Xô."],
+["giống nhau giữa chiến tranh lạnh và hai cuộc chiến tranh thế giới","để lại hậu quả nghiêm trọng cho nhân loại."],
+ 
+[["chính thức cùng tuyên bố chấm dứt chiến tranh lạnh","không xuất phát từ"],"việc cả hai nước đều gặp khó khăn do tác động của phong trào giải phóng dân tộc."],
+["ảnh hưởng của chiến tranh lạnh đối với cục diện quan hệ giữa các nước ở châu á","Gây ra cuộc chiến tranh xâm lược Trung Quốc của Mĩ."],
+["chấm dứt hoàn toàn sự tồn tại của trật tự thế giới hai cực","Sự tan rã của Liên Xô năm 1991."],
+["áp-ga-ni-xtan","hòa bình."],
+["kí hiệp ước abm và hiệp định salt","giảm tình trạng chạy đua vũ trang giữa hai nước."],
+["phản ánh đầy đủ mối quan hệ quốc tế trong nửa sau thế kỉ xx","Các mối quan hệ quốc tế được mở rộng và đa dạng hóa, các quốc gia cùng tồn tại hòa bình, vừa đấu tranh, vừa hợp tác."],
+["bản chất cuộc chiến tranh lạnh do mỹ phát động là","tăng cường chạy đua vũ trang, thành lập liên minh quân sự, khiến cho thế giới luôn căng thẳng."],
+["trật tự thế giới mới dần hình thành theo xu thế","đa cực."],
+["chi phối toàn bộ đời sống chính trị thế giới","I-an-ta."],
+["vận dụng để giải quyết vấn đề biển đông","Giải quyết các tranh chấp bằng biện pháp hòa bình."],
+["quan hệ quốc tế giữa hai cực trở nên căng thẳng là khi","Mĩ phát động Chiến tranh lạnh (1947) nhằm chống lại Liên Xô và các nước Đông Âu."],
+["từ đầu những năm 70 của thế kỉ xx đến năm 1991","Trật tự thế giới hai cực I-an-ta suy yếu và đi đến sụp đổ."],
+["chiến tranh lạnh không tạo ra","những cuộc xung đột trực tiếp bằng quân sự giữa Liên Xô và Mỹ."],
+["sự tồn tại của trật tự thế giới hai cực i-an-ta gắn liền với","sự hình thành hai hệ thống xã hội đối lập và Chiến tranh lạnh."],
+["mục tiêu cơ bản của cuộc chiến tranh lạnh do mỹ phát động","chống lại Liên Xô và các nước Đông Âu."],
+["đánh dấu sự xác lập của cục diện hai cực, hai phe và chiến tranh lạnh bao trùm","Sự ra đời của NATO và Tổ chức hiệp ước Vacsava."],
+["từ năm 1945 đến những năm 70 của thế kỉ xx","Trật tự thế giới được xác lập và phát triển với sự đối đầu giữa Mĩ và Liên Xô."],
+["trải qua mấy giai đoạn","hai."],
+["mĩ và liên xô đã tuyên bố chấm dứt","Chiến tranh lạnh."],
+["biểu hiện của xu hướng hòa hoãn trong quan hệ quốc tế","Liên Xô và Mỹ thỏa thuận bước đầu về hạn chế vũ khí chiến lược."],
+["được mở đầu thông qua các cuộc tiếp xúc","nguyên thủ của hai nước Liên Xô và Mĩ"],
+["không phải là nguyên nhân dẫn tới sự sụp đổ","Chủ nghĩa khủng bố đe dọa hòa bình thế giới."],
+["tác động như thế nào đến tình hình các nước đông nam á","Quan hệ giữa các nước ASEAN và các nước Đông Dương được trở nên hòa dịu."],
+["chiến tranh lạnh chấm dứt đã mở ra chiều hướng và điều kiện để giải quyết hòa bình","trên phạm vi toàn cầu."],
+["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Xu thế hòa hoãn, toàn cầu hóa và ảnh hưởng của cuộc Cách mạng Công nghiệp lần thứ ba."],
+["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Thắng lợi của phong trào giải phóng dân tộc và sự ra đời của hàng loạt các quốc gia độc lập."],
+[["cuộc gặp gỡ không chính thức","chính thức tuyên bố"],"chấm dứt chiến tranh lạnh."],
+["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Chạy đua vũ trang khiến cả Liên Xô và Mĩ tốn kém, suy yếu, buộc hai bên phải tự điều chỉnh từng bước hạn chế căng thẳng."],
+["hòa hoãn đông - tây xuất hiện từ khi nào","Đầu những năm 70."],
+["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Sự sụp đổ chế độ xã hội chủ nghĩa của các nước Đông Âu và Liên Xô."]
+];
+ 
+var QBANK2=[
+["hiến chương liên hợp quốc được thông qua tại hội nghị","hội nghị Xan Phran-xi-xcô."],
+["phạm vi ảnh hưởng của liên xô là","Miền Đông Đức, Đông Béclin và các nước Đông Âu."],
+["toàn bộ các hoạt động của liên hợp quốc kể từ khi thành lập","những mục tiêu và nguyên tắc hoạt động do Hiến chương quy định."],
+["phản ánh đúng và đầy đủ vị trí, vai trò của tổ chức liên hợp quốc","Là diễn đàn quốc tế lớn nhất, vừa hợp tác vừa đấu tranh vì hòa bình, an ninh thế giới."],
+["mục tiêu nào là cơ sở để thực hiện các mục tiêu khác","duy trì hòa bình và an ninh quốc tế."],
+["trụ sở chính của tổ chức liên hợp quốc đặt tại","Niu Ooc (Mỹ)."],
+["sự ra đời của liên hợp quốc phù hợp với","khát vọng được sống trong hòa bình của nhân dân thế giới."],
+["đóng góp của tổ chức liên hợp quốc trong việc duy trì hòa bình, an ninh thế giới trong thế kỷ","vai trò của các nước lớn và ý thức ngày càng cao của các dân tộc."],
+["bảo vệ chủ quyền biển đảo","Giải quyết các tranh chấp quốc tế bằng biện pháp hòa bình."],
+["vai trò quan trọng nhất của đại hội đồng","Thảo luận và phê duyệt các quyết sách chung."],
+["thúc đẩy thương mại quốc tế và nâng cao đời sống người dân","Hỗ trợ công tác xóa đói, giảm nghèo, đặc biệt là ở các nước đang phát triển."],
+["cơ quan duy nhất của liên hợp quốc có đại diện của tất cả các nước thành viên","Đại hội đồng."],
+["việt nam gia nhập liên hợp quốc trong bối cảnh","Cả nước hoàn thành cuộc cách mạng dân tộc dân chủ nhân dân."],
+["một trong những nguyên tắc hoạt động của liên hợp quốc là","Không can thiệp vào công việc nội bộ các nước."],
+["chính thức được thành lập khi các nước thành viên","phê chuẩn Hiến chương."],
+["bảo đảm quyền con người, phát triển văn hóa, xã hội","Tăng cường bình đẳng giới và vị thế, năng lực của phụ nữ."],
+["giữ vai trò trọng yếu trong việc duy trì hoà bình và an ninh quốc tế","Hội đồng bảo an."],
+["phản ánh không đúng bối cảnh lịch sử thành lập tổ chức liên hợp quốc","Chủ nghĩa phát xít xuất hiện và cầm quyền ở nhiều nước."],
+["nội dung nào sau đây là vai trò của liên hợp quốc trong việc duy trì hòa bình","Góp phần ngăn ngừa không để xảy ra cuộc chiến tranh thế giới mới kể từ năm 1945 đến nay."],
+["diễn đàn quốc tế vừa hợp tác vừa đấu tranh nhằm duy trì hoà bình","Liên hợp quốc."],
+[["đầu năm 1945","vấn đề cấp bách"],"Tiêu diệt Chủ nghĩa phát xít."],
+[["mục tiêu quan trọng của tổ chức nào","duy trì hoà bình và an ninh quốc tế"],"Liên hợp quốc (UN)."],
+["không thuộc liên hợp quốc","NATO."],
+["thường trực của hội đồng bảo an liên hợp quốc","Anh."]
+];
+ 
+var LHQ_B={
+LHQ25:[["Nguyên tắc giải quyết các tranh chấp quốc tế bằng biện pháp hòa bình góp phần giúp Liên hợp quốc giải quyết triệt để xung đột giữa các quốc gia trên thế giới.",0],
+["Đoạn tư liệu cung cấp thông tin về mục đích thành lập và nguyên tắc hoạt động của Liên hợp quốc.",1],
+["Mục đích chính của Liên hợp quốc là thúc đẩy sự phát triển quan hệ hữu nghị giữa các quốc gia trên thế giới.",1],
+["Toàn vẹn lãnh thổ và độc lập chính trị là những quyền dân tộc cơ bản của một quốc gia, được Liên hợp quốc tôn trọng thông qua nguyên tắc hoạt động.",1]],
+LHQ26:[["Những đóng góp của Liên hợp quốc phản ánh đúng mục đích thành lập của tổ chức này trong lịch sử.",1],
+["Liên hợp quốc chưa thể hiện vai trò đối với các quốc gia đang phát triển.",0],
+["Liên hợp quốc đã giải quyết được mọi vấn đề trong lịch sử và đang đứng trước những cơ hội phát triển mới.",0],
+["Vai trò nổi bật của Liên hợp quốc trong việc duy trì hòa bình và an ninh thế giới từ năm 1945 đến nay là ngăn ngừa, không để xảy ra một cuộc chiến tranh thế giới mới.",1]],
+LHQ27:[["Ngày nay, Liên hợp quốc vẫn tiếp tục thực hiện mục tiêu giải quyết các vụ tranh chấp, xung đột quốc tế bằng biện pháp hoà bình",1],
+["Một trong những mục tiêu của Liên hợp quốc là giải quyết các vụ tranh chấp quốc tế bằng pháp luật của các quốc gia.",0],
+["Đoạn tư liệu thể hiện mục tiêu của Liên hợp quốc là duy trì hoà bình và an ninh quốc phòng cho tất cả các quốc gia.",0],
+["Trong số các mục tiêu của Liên hợp quốc, duy trì hoà bình và an ninh quốc tế là mục tiêu được đặt lên hàng đầu.",1]],
+LHQ28:[["Đoạn tư liệu cho biết nguyên tắc hoạt động của Liên hợp quốc được nêu rõ trong Hiến chương Liên hợp quốc.",1],
+["Mặc dù Hiến chương Liên hợp quốc nêu rõ những nguyên tắc hoạt động nhưng giữa các quốc gia thành viên vẫn diễn ra chiến tranh, xung đột.",1],
+["Đoạn tư liệu nêu rõ mục tiêu hoạt động của Liên hợp quốc là làm tròn nghĩa vụ đối với các quốc gia.",0],
+["Đoạn tư liệu là văn bản pháp lí giúp Liên hợp quốc ngăn chặn mọi xung đột giữa các thành viên tham gia thành lập tổ chức.",0]]
+};
+var NEW_B={
+B11:[["Việc Mĩ – Xô kí kết các hiệp định trên nhằm tạo ra thế cân bằng chiến lược quân sự chung giữa hai siêu cường trên phạm vi thế giới.",1],
+["Mĩ hòa hoãn với Liên Xô là thủ đoạn mới nhằm chống phá phong trào giải phóng dân tộc trên thế giới.",1],
+["Những sự kiện trên chứng tỏ quan hệ Mĩ –Xô bắt đầu chuyển từ đối đầu sang hòa hoãn, đối thoại.",1],
+["Việc Mĩ – Xô kí kết các hiệp định trên không xuất phát từ việc Liên Xô đã phá thế độc quyền vũ khí nguyên tử của Mĩ.",0]],
+B12:[["Thông điệp của Tổng thống Mĩ Truman (3/1947) là sự kiện khởi đầu cuộc \u201cchiến tranh lạnh\u201d.",1],
+["Nhân tố chủ yếu chi phối quan hệ quốc tế trong phần lớn nửa sau thế kỉ XX là cục diện \u201cChiến tranh lạnh\u201d.",1],
+["Trước sự phát triển mạnh mẽ của chủ nghĩa cộng sản, nước Mĩ phải đứng ra \u201cđảm nhiệm sứ mạng lãnh đạo thế giới tự do\u201d.",0],
+["Mục tiêu bao quát của \u201cChiến tranh lạnh\u201d do Mĩ phát động là ngăn chặn và tiến tới tiêu diệt các nước xã hội chủ nghĩa.",1]]
+};
+var NEW_B2={
+B13:[["Cách mạng Trung Quốc năm 1949 là thất bại nặng nề nhất của Mĩ quá trình tiến hành \u201cchiến tranh lạnh\u201d.",0],
+["Nước Cộng hoà nhân dân Trung Hoa ra đời đánh dấu quá trình thống nhất lãnh thổ của Trung Quốc đã hoàn thành.",0],
+["Thắng lợi của cách mạng Trung Quốc năm 1949 đã mở rộng không gian địa lí của hệ thống xã hội chủ nghĩa.",1],
+["Thắng lợi của cách mạng Trung Quốc năm 1949 là bước \u201cđột phá\u201d của quá trình xói mòn trật tự hai cực I an ta.",1]]
+};
+var NEW_B3={
+B14:[["Một trong những hạn chế của Hội nghị Ianta là đã xâm phạm đến chủ quyền, lãnh thổ và lợi ích của nhân dân nhiều nước.",1],
+["Đặc điểm nổi bật của trật tự hai cực Ianta là thế giới phân thành hai cực do Mỹ và Liên Xô đứng đầu.",1],
+["Sau Chiến tranh thế giới thứ hai, Mĩ đã khống chế được Tây Âu, Nhật Bản và thực hiện được mưu đồ bá chủ thế giới.",0],
+["Trật tự hai cực Ianta khởi đầu cho sự thay đổi quan hệ giữa các nước Đồng minh, so sánh tương quan lực lượng mới giữa các cường quốc.",1]]
+};
+Object.assign(B, NEW_B3);
+Object.assign(B, NEW_B2);
+Object.assign(B, NEW_B);
+var BIENDONG_B={
+B_BIENDONG:[["Sự sụp đổ của trật tự hai cực Ianta xuất phát từ lí do không giải quyết triệt để mâu thuẫn giữa các cường quốc",1],
+["Trong những năm 1989 – 1991, Liên Xô và Mỹ rút dần sự có mặt của mình ở nhiều khu vực quan trọng trên thế giới",1],
+["Bài học của các cường quốc trong quá trình hình thành trật tự thế giới mới là phải xây dựng sức mạnh tổng hợp",1],
+["Nhật Bản và nước Đức trở thành mối lo ngại đối với các cường quốc thắng trận trước đây vì đã khôi phục lại chủ nghĩa phát xít",0]]
+};
+Object.assign(B, BIENDONG_B);
+Object.assign(B, LHQ_B);
+ 
+function detectQuestion1(qText){
+  var t=norm(qText);
+  var cands=[];
+  QBANK1.concat(QBANK2).forEach(function(entry){
+    var key=entry[0];
+    var keys=Array.isArray(key)?key:[key];
+    var ok=keys.every(function(k){return t.indexOf(norm(k))>=0;});
+    if(ok) cands.push(entry[1]);
+  });
+  return cands.length?cands:null;
+}
+ 
+function matchToTarget(opts,target){
+  var best={letter:null,score:-1};
+  opts.forEach(function(o){
+    var s = norm(o.text)===norm(target) ? 2 : jac(o.text,target);
+    if(s>best.score){best={letter:o.letter,score:s};}
+  });
+  return best.letter;
+}
+ 
+function detectBlock(t){
+  t=t.toLowerCase();
+  if(t.includes('phân chia nhau phạm vi thế lực trên cơ sở thoả thuận'))return'B2';
+  if(t.includes('vĩ tuyến 38'))return'B_VT38';
+  if(t.includes('xakhalin'))return'B_XAKHALIN';
+  if(t.includes('phần lan trở thành hai nước trung lập'))return'B_DUCTRUNGLAP';
+  if(t.includes('tr.401'))return'B9';
+  if(t.includes('tr.424'))return'B8';
+  if(t.includes('trung tâm điều hoà các nỗ lực quốc tế'))return'B1';
+  if(t.includes('cộng hoà nhân dân trung hoa ra đời'))return'B13';
+  if(t.includes('vành đai an toàn')||t.includes('3 mục tiêu cơ bản'))return'B14';
+  if(t.includes('hiệp ước abm')||t.includes('salt'))return'B11';
+  if(t.includes('chủ nghĩa tơrunan')||t.includes('sứ mạng lãnh đạo thế giới tự do'))return'B12';
+  if(t.includes('san francisco')||t.includes('truman'))return'B6';
+  if(t.includes('bút-sơ')||t.includes('goóc-ba')||t.includes('ngưỡng cửa'))return'B10';
+  if(t.includes('sớc-sin')||t.includes('ru-dơ-ven')||t.includes('xta-lin')){
+    if(t.includes('thành lập liên hợp quốc và'))return'B5B';
+    return'B5A';
+  }
+  if(t.includes('nguyên nhân sụp đổ')||t.includes('chạy đua vũ trang khiến'))return'B3';
+  if(t.includes('trung tâm quyền lực')||t.includes('ấn độ')||t.includes('liên bang nga'))return'B4';
+  if(t.includes('trang 227')||t.includes('đề phòng và thủ tiêu sự đe dọa'))return'LHQ25';
+  if(t.includes('trang 228')||t.includes('phi thực dân hóa'))return'LHQ26';
+  if(t.includes('cấm đe dọa sử dụng vũ lực'))return'B7';
+  if(t.includes('thi hành những biện pháp tập thể có hiệu quả'))return'LHQ27';
+  if(t.includes('làm tròn những nghĩa vụ'))return'LHQ28';
+  if(t.includes('trang 417')||t.includes('biến động lớn ở đông âu và liên xô'))return'B_BIENDONG';
+  return null;
+}
+ 
+function parseBlocks(raw){
+  var lines=raw.split(/\r?\n/).map(function(l){return l.trim();});
+  var blocks=[],cur=null;
+  lines.forEach(function(line){
+    var m=line.match(/^Câu\s*(\d+)/i);
+    if(m){ if(cur)blocks.push(cur); cur={num:parseInt(m[1]),lines:[]}; }
+    else if(cur){ cur.lines.push(line); }
+  });
+  if(cur)blocks.push(cur);
+  return blocks;
+}
+ 
+function parseOptions1(lines,startIdx){
+  var opts=[],i=startIdx+1;
+  while(opts.length<4 && i<lines.length){
+    var line=lines[i];
+    if(line===''){i++;continue;}
+    var m=line.match(/^([ABCD])[\.\):]\s*(.+)$/);
+    if(m){opts.push({letter:m[1],text:m[2]});i++;continue;}
+    if(/^[ABCD]\.?$/.test(line)){
+      var letter=line.replace('.','');i++;
+      while(i<lines.length&&lines[i]==='')i++;
+      opts.push({letter:letter,text:lines[i]||''});i++;continue;
+    }
+    i++;
+  }
+  return opts;
+}
+ 
+function parseStatements(lines,startIdx){
+  var st=[],i=startIdx+1;
+  while(i<lines.length){
+    var line=lines[i];
+    var m=line.match(/^([abcd])\)\s*(.*)$/i);
+    if(m){
+      var letter=m[1].toLowerCase(), text=m[2];
+      if(!text.trim()){
+        var j=i+1;
+        while(j<lines.length && lines[j]==='')j++;
+        text=lines[j]||'';
+        i=j;
+      }
+      st.push({letter:letter,text:text});
+    }
+    i++;
+  }
+  return st;
+}
+ 
+function matchAnswer1(opts){
+  var best={letter:null,score:-1};
+  opts.forEach(function(o){
+    ANS1.forEach(function(a){
+      var s = norm(o.text)===norm(a) ? 2 : jac(o.text,a);
+      if(s>best.score){best={letter:o.letter,score:s};}
+    });
+  });
+  return best.letter;
+}
+ 
+function matchTruth(text,statements){
+  var scored=statements.map(function(s){return {truth:s[1],score:jac(text,s[0])};});
+  scored.sort(function(a,b){return b.score-a.score;});
+  var best=scored[0], second=scored[1]||{score:0};
+  var uncertain = (best.score - second.score) < 0.15;
+  return {truth:best.truth, uncertain:uncertain};
+}
+ 
+function extractAnswerDirect(lines){
+  for(var i=0;i<lines.length;i++){
+    var l=lines[i].trim();
+    var mSingle=l.match(/^Đáp án đúng\s*:\s*([ABCDabcd])\s*$/);
+    if(mSingle) return {type:'single', value:mSingle[1].toUpperCase()};
+    if(/^Đáp án đúng\s*:?\s*$/.test(l)){
+      var res={}, j=i+1;
+      while(j<lines.length){
+        var l2=lines[j].trim();
+        if(/^Thí sinh chọn/i.test(l2)) break;
+        if(/^Câu làm sai/i.test(l2)) break;
+        var m2=l2.match(/^([a-dA-D])\)\s*(Đúng|Sai)\b/);
+        if(m2){ res[m2[1].toLowerCase()]=(m2[2]==='Đúng'?'Đ':'S'); }
+        j++;
+      }
+      if(Object.keys(res).length>=2) return {type:'multi', value:res};
+    }
+  }
+  return null;
+}
+ 
+function run(){
+  var raw=document.getElementById('inp').value;
+  if(!raw.trim()){document.getElementById('out').innerHTML='<div class="warn">Bạn chưa dán đề.</div>';return;}
+  var blocks=parseBlocks(raw);
+  var res1=[],res2=[],warn=[];
+  blocks.forEach(function(b){
+    var direct=extractAnswerDirect(b.lines);
+    if(direct){
+      if(direct.type==='single'){
+        res1.push({num:b.num, ans:direct.value, low:false});
+      } else {
+        var order=['a','b','c','d'];
+        var chuoi=order.map(function(l){return direct.value[l]||'?';}).join('');
+        res2.push({num:b.num, chuoi:chuoi});
+      }
+      return;
+    }
+    var joined=b.lines.join('\n');
+    var idx1=b.lines.findIndex(function(l){return /^chọn một đáp án đúng$/i.test(l.trim());});
+    if(idx1<0){
+      var altA=b.lines.findIndex(function(l){return /^A\.?$/.test(l.trim());});
+      if(altA>0) idx1=altA-1;
+    }
+    var idx2=b.lines.findIndex(function(l){return /^chọn đúng hoặc sai$/i.test(l.trim());});
+    if(idx1>=0){
+      var opts=parseOptions1(b.lines,idx1);
+      if(opts.length===4){
+        var qText=b.lines.slice(0,idx1).join(' ');
+        var targets=detectQuestion1(qText);
+        var ans, low=false;
+        if(targets){
+          var best={letter:null,score:-1};
+          targets.forEach(function(tt){
+            var letter=matchToTarget(opts,tt);
+            var opt=opts.find(function(o){return o.letter===letter;});
+            var s = opt ? (norm(opt.text)===norm(tt)?2:jac(opt.text,tt)) : -1;
+            if(s>best.score){best={letter:letter,score:s};}
+          });
+          ans=best.letter;
+        }
+        else { ans=matchAnswer1(opts); low=true; }
+        res1.push({num:b.num, ans:ans, low:low});
+      } else warn.push('Câu '+b.num+': không tách được đủ 4 đáp án.');
+    } else if(idx2>=0){
+      var tuLieu=b.lines.slice(0,idx2).join(' ');
+      var blockId=detectBlock(tuLieu);
+      var sts=parseStatements(b.lines,idx2);
+      if(blockId && B[blockId] && sts.length>=4){
+        var order=['a','b','c','d'];
+        var chuoi=order.map(function(l){
+          var s=sts.find(function(x){return x.letter===l;});
+          if(!s) return '?';
+          var m=matchTruth(s.text,B[blockId]);
+          var ch = m.truth===1?'Đ':(m.truth===0?'S':'?');
+          return m.uncertain ? ch.toLowerCase() : ch;
+        }).join('');
+        var lowConf = /[đs]/.test(chuoi);
+        res2.push({num:b.num, chuoi:chuoi, low:lowConf});
+      } else warn.push('Câu '+b.num+': không nhận diện được bộ tư liệu (Phần II).');
+    }
+  });
+ 
+  var html='';
+  if(res1.length){
+    html+='<div class="result"><h3>PHẦN I</h3><div class="pack">';
+    for(var i=0;i<res1.length;i+=6){
+      var chunk=res1.slice(i,i+6);
+      html+=chunk[0].num+'–'+chunk[chunk.length-1].num+': '+chunk.map(function(r){return (r.ans||'?')+(r.low?'*':'');}).join(', ')+'\n';
+    }
+    html+='</div>';
+    if(res1.some(function(r){return r.low;})) html+='<div class="warn">* câu không nhận diện được qua ngân hàng câu hỏi, kết quả dò theo pool chung — nên kiểm tra lại thủ công.</div>';
+    html+='</div>';
+  }
+  if(res2.length){
+    html+='<div class="result"><h3>PHẦN II</h3><div class="pack">';
+    res2.forEach(function(r){ html+='Câu '+r.num+': '+r.chuoi+'\n'; });
+    html+='</div>';
+    if(res2.some(function(r){return r.low;})) html+='<div class="warn">đ/s viết thường: điểm số giữa Đúng/Sai quá sít sao, nên kiểm tra lại thủ công.</div>';
+    html+='</div>';
+  }
+  if(warn.length){
+    html+='<div class="result"><h3>⚠️ Cảnh báo</h3><div class="pack">'+warn.join('\n')+'</div></div>';
+  }
+  if(!res1.length && !res2.length && !warn.length){
+    html='<div class="result">Không tách được câu hỏi nào. Kiểm tra lại định dạng đề đã dán.</div>';
+  }
+  document.getElementById('out').innerHTML=html;
+}
+</script>
+</body>
+</html>
+ 

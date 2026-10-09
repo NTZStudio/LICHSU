@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chấm đề Ianta</title>
+<title>Chấm đề Ianta v5</title>
 <style>
 :root{
   --bg:#f7f7fb;--card:#fff;--text:#1a1a1a;--sub:#666;--accent:#2563eb;--border:#e2e2ea;--ok:#16a34a;--bad:#dc2626;
@@ -25,14 +25,37 @@ button:active{opacity:.85;}
 .pack{font-family:ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;line-height:1.6;font-size:14.5px;}
 .warn{color:var(--sub);font-size:13px;margin-top:8px;}
 .dtline{font-size:13.5px;color:var(--sub);}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;margin-top:10px;}
+.opts label{display:inline-flex;align-items:center;gap:6px;font-size:14px;cursor:pointer;user-select:none;}
+.opts input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer;}
+.btn2{background:transparent;color:var(--accent);border:1px solid var(--accent);}
+.row{display:flex;flex-wrap:wrap;gap:10px;}
+#pstatus{color:var(--sub);font-size:13px;margin-top:8px;min-height:1.3em;}
+.notice{margin:0 0 14px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;}
+.notice strong{display:block;margin-bottom:4px;}
+.notice p{margin:0;line-height:1.5;}
+.notice small{display:block;margin-top:8px;font-size:12px;color:var(--sub);}
 </style>
 </head>
 <body>
 <h1>📚 Chấm đề Lịch sử — "Trật tự hai cực Ianta"</h1>
 <div class="dtline">Dán toàn bộ đề (đúng định dạng bạn hay copy) vào ô dưới, bấm Chấm.</div>
-<textarea id="inp" placeholder="Dán đề vào đây..."></textarea><br>
-<button onclick="run()">✅ Chấm đáp án</button>
+<textarea id="inp" placeholder="Dán đề vào đây..."></textarea>
+<div class="opts">
+  <label><input type="checkbox" id="autoPaste"> Tự động dán từ clipboard</label>
+  <label><input type="checkbox" id="autoRun"> Tự chấm ngay sau khi dán</label>
+</div>
+<div class="row">
+  <button onclick="run()">✅ Chấm đáp án</button>
+  <button class="btn2" onclick="pasteNow(true)">📋 Dán từ clipboard</button>
+</div>
+<div id="pstatus" role="status"></div>
 <div id="out"></div>
+<div class="notice" style="margin:16px 0 0" role="note">
+  <strong>🔔 Thông báo</strong>
+  <p>Đây là bản test cuối cùng của web để nâng cấp toàn diện về web và các bài mới!! Cảm ơn</p>
+  <small>Từ @TD Dũng</small>
+</div>
  
 <script>
 function norm(s){return (s||'').toLowerCase().normalize('NFC').replace(/[""'’“”\.,;:!?()]/g,'').replace(/\s+/g,' ').trim();}
@@ -176,7 +199,45 @@ var QBANK1=[
 [["cuộc gặp gỡ không chính thức","chính thức tuyên bố"],"chấm dứt chiến tranh lạnh."],
 ["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Chạy đua vũ trang khiến cả Liên Xô và Mĩ tốn kém, suy yếu, buộc hai bên phải tự điều chỉnh từng bước hạn chế căng thẳng."],
 ["hòa hoãn đông - tây xuất hiện từ khi nào","Đầu những năm 70."],
-["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Sự sụp đổ chế độ xã hội chủ nghĩa của các nước Đông Âu và Liên Xô."]
+["nguyên nhân nào dẫn tới sự sụp đổ của trật tự thế giới hai cực","Sự sụp đổ chế độ xã hội chủ nghĩa của các nước Đông Âu và Liên Xô."],
+["để xây dựng sức mạnh thực sự","phát triển kinh tế."],
+["không phải là xu thế phát triển của thế giới sau khi chiến tranh lạnh","Sự phát triển và tác động to lớn của các công ty độc quyền xuyên quốc gia."],
+["hầu hết các quốc gia đều ra sức điều chỉnh","chiến lược phát triển lấy kinh tế làm trọng tâm."],
+["được coi là thời cơ do xu thế toàn cầu hoá đem lại","Tiếp thu vốn, khoa học - kĩ thuật và kinh nghiệm quản lí từ bên ngoài."],
+["mặt tiêu cực của xu thế toàn cầu hóa","Gây bất công xã hội, phân hóa giàu nghèo."],
+["xu thế đang phát triển mạnh mẽ của thế giới là","toàn cầu hóa."],
+["mối quan hệ giữa các nước lớn mang tính hai mặt là","cạnh tranh và hợp tác."],
+["điều chỉnh chiến lược lấy phát triển kinh tế làm trọng tâm","kinh tế trở thành nội dung căn bản trong quan hệ quốc tế."],
+["bước sang thế kỉ xxi, xu thế chủ đạo trong quan hệ quốc tế là","hòa bình, hợp tác và phát triển."],
+["thách thức lớn nhất của việt nam khi phải đối mặt trong xu thế toàn cầu hoá là","sự cạnh tranh khốc liệt trong thị trường thế giới."],
+["là thời cơ đối với các dân tộc khi bước vào thế kỉ xxi","Tạo môi trường hòa bình để các dân tộc hợp tác và phát triển mọi mặt."],
+["thời cơ lớn của việt nam trong xu thế toàn cầu hóa là gì","Thúc đẩy kinh tế phát triển."],
+["xuất hiện xu thế toàn cầu hóa là do hệ quả của cuộc","Cách mạng khoa học công nghệ."],
+["đảng ta nhận định như thế nào về tác động của xu hướng toàn cầu hóa","là cơ hội đồng thời là thách thức lớn đối với sự phát triển của dân tộc."],
+["nguy cơ lớn nhất của việt nam khi phải đối mặt trong xu thế toàn cầu hoá là","mất bản sắc văn hóa dân tộc và độc lập chủ quyền quốc gia."],
+["sau khi chiến tranh lạnh chấm dứt, thế giới chuyển dần sang xu thế nào","Hòa bình, đối thoại và hợp tác phát triển."],
+["vai trò ngày càng lớn của các công ty xuyên quốc gia là biểu hiện của xu thế nào","Xu thế toàn cầu hóa."],
+["tạo điều kiện như thế nào cho tất cả các nước","Thời cơ và thách thức với tất cả quốc gia, dân tộc."],
+["yếu tố tác động đến sự hình thành xu thế đa cực sau chiến tranh lạnh là","sự phát triển của các lực lượng cách mạng, hòa bình, dân chủ và tiến bộ xã hội."],
+["điều chỉnh chiến lược phát triển lấy kinh tế là trọng tâm vì","quan hệ quốc tế đối đầu quân sự không còn phù hợp trong bối cảnh mới."],
+["một trong những xu thế phát triển của thế giới sau chiến tranh lạnh là","Các nước điều chỉnh phát triển lấy kinh tế làm trung tâm."],
+["theo hướng đối thoại, thỏa hiệp, tránh xung đột trực tiếp","muốn tạo môi trường quốc tế thuận lợi để vươn lên xác lập vị thế."],
+["đối thoại, thỏa hiệp, tránh xung đột trực tiếp chủ yếu vì","muốn có điều kiện thuận lợi để vươn lên xác lập vị thế quốc tế."],
+["thách thức lớn nhất của thế giới trong thập kỷ đầu tiên của thế kỷ xxi","Chủ nghĩa khủng bố."],
+["chiến tranh lạnh kết thúc năm 1989 đã","thúc đẩy xu thế đối thoại, hợp tác giữa các nước Đông Dương với các nước khác."],
+["sự ra đời của các tổ chức liên kết kinh tế, thương mại, tài chính quốc tế và khu vực","Toàn cầu hóa."],
+["trên thế giới xuất hiện xu thế","toàn cầu hóa."],
+["để thích nghi với xu thế toàn cầu hóa, việt nam cần phải","cải cách sâu rộng nâng cao sức cạnh tranh và hiệu quả của nền kinh tế."],
+[["giới cầm quyền mĩ ra sức thiết lập trật tự thế giới","một cực"],"Sự vươn lên của các cường quốc."],
+["hình thức cạnh tranh chủ yếu giữa các cường quốc từ sau khi chiến tranh lạnh chấm dứt đến năm 2000","xây dựng sức mạnh tổng hợp của quốc gia."],
+["yếu tố tác động đến sự hình thành xu thế thế giới sau chiến tranh lạnh","sự phát triển của các cường quốc và Liên minh châu Âu (EU)."],
+["không phản ánh đúng xu thế phát triển của thế giới sau khi chiến tranh lạnh","Trật tự thế giới đơn cực được xác lập trong quan hệ quốc tế."],
+["có ý nghĩa sống còn đối với đảng và nhân dân ta","Nắm bắt cơ hội, vượt qua thách thức."],
+["một trong những xu thế phát triển của thế giới sau chiến tranh lạnh là","Xu thế đa cực."],
+["một trong những xu thế phát triển của thế giới sau chiến tranh lạnh là","Xu thế đối thoại, hợp tác."],
+["tác động như thế nào đến tình hình thế giới ngày nay","Nhiều vụ tranh chấp, xung đột được giải quyết bằng biện pháp hòa bình."],
+["tác động to lớn của các công ty xuyên quốc gia là một trong những biểu hiện của xu thế","toàn cầu hóa."],
+["đúng với một trong các xu thế phát triển của thế giới sau chiến tranh lạnh","Trật tự thế giới mới đang trong quá trình hình thành theo xu hướng \u201cđa cực\u201d."]
 ];
  
 var QBANK2=[
@@ -246,6 +307,54 @@ B14:[["Một trong những hạn chế của Hội nghị Ianta là đã xâm ph
 ["Sau Chiến tranh thế giới thứ hai, Mĩ đã khống chế được Tây Âu, Nhật Bản và thực hiện được mưu đồ bá chủ thế giới.",0],
 ["Trật tự hai cực Ianta khởi đầu cho sự thay đổi quan hệ giữa các nước Đồng minh, so sánh tương quan lực lượng mới giữa các cường quốc.",1]]
 };
+var NEW_B4={
+B15:[["Sự sụp đổ của trật tự hai cực Ianta xuất phát từ lí do không giải quyết triệt để mâu thuẫn giữa các cường quốc.",1],
+["Bài học của các cường quốc trong quá trình hình thành trật tự thế giới mới là phải xây dựng sức mạnh tổng hợp.",1],
+["Trong những năm 1989 – 1991, Liên Xô và Mỹ rút dần sự \u201ccó mặt\u201d của mình ở nhiều khu vực quan trọng trên thế giới.",1],
+["Nhật Bản và nước Đức trở thành mối lo ngại đối với các cường quốc thắng trận trước đây vì đã khôi phục lại chủ nghĩa phát xít.",0]],
+B16:[["\u201cTrật tự thế giới\u201d được nhắc đến trong đoạn tư liệu trên là trật tự thế giới \u201chai cực Ianta\u201d được hình thành sau Chiến tranh thế giới thứ hai.",0],
+["Một trong những đặc điểm nổi bật của trật tự thế giới mới được thiết lập sau Chiến tranh lạnh là thế giới bị chia thành hai hệ thống xã hội đối lập.",0],
+["Một trong những nhân tố tác động đến sự hình thành trật tự thế giới mới sau khi Chiến tranh lạnh kết thúc là sự vươn lên mạnh mẽ của các nước Á, Phi, Mĩ-latinh.",1],
+["Nhân tố đóng vai trò quyết định đến sự hình thành trật tự thế giới mới sau Chiến tranh lạnh là cuộc chạy đua sức mạnh tổng hợp, nhưng sức mạnh kinh tế là trụ cột.",1],
+["Mỹ, Nga, Trung Quốc là những cường quốc giữ vai trò chi phối quan hệ quốc tế trong cả trật tự hai cực I-an-ta và trật tự đa cực.",0],
+["Cuộc chạy đua về sức mạnh tổng hợp của các cường quốc là một trong những nhân tố quan trọng tác động đến sự hình thành trật tự thế giới đa cực.",1],
+["Đoạn tư liệu cung cấp thông tin về những biểu hiện của trật tự thế giới đa cực đang được hình thành hiện nay.",0],
+["Cuộc cách mạng khoa học – kĩ thuật vừa là nguyên nhân dẫn đến sự xói mòn và sụp đổ của trật tự hai cực I-an-ta, vừa là nhân tố tác động đến sự hình thành của trật tự thế giới đa cực.",1]],
+B17:[["Sự xuất hiện của các tập đoàn như: Apple, Samsung, Microsoft, Facebook, …nhắc đến biểu hiện sự phát triển và tác động to lớn của các công ty xuyên quốc gia của xu thế toàn cầu hóa.",1],
+["Xu thế toàn cầu hóa là hệ quả quan trọng của cuộc cách mạng khoa học công nghệ.",1],
+["\u201cĐến năm 2000, nước ta có quan hệ thương mại với hơn 140 nước quan hệ đầu tư với gần 70 nước và vùng lãnh thổ\u201d đã thể hiện sự phát triển nhanh chóng của quan hệ thương mại quốc tế, tăng cường sự trao đổi thương mại, tính phụ thuộc và mối quan hệ chặt chẽ của nền kinh tế Việt Nam đối với nền kinh tế thế giới.",1],
+["Xét về bản chất, toàn cầu hóa là quá trình tăng lên mạnh mẽ của những mối liên hệ, những ảnh hưởng, tác động qua lại lẫn nhau, không phụ thuộc lẫn nhau của tất cả các khu vực, các quốc gia, các dân tộc trên thế giới.",0]],
+B18:[["Xu thế đối thoại xuất hiện góp phần giải quyết những tranh chấp và xung đột quốc tế bằng biện pháp hòa bình.",1],
+["Sự thay đổi trong quan hệ quốc tế diễn ra vào những năm cuối thế kỉ XX phản ánh sự thay đổi tương quan lực lượng giữa các cường quốc.",1],
+["Trong thời kì chiến tranh lạnh, mối quan hệ Xô – Mĩ là nhân tố chủ yếu chi phối quan hệ quốc tế.",1],
+["Năm 1989, quan hệ Xô - Trung đã được bình thường hóa trở lại đánh dấu chiến tranh lạnh đã chấm dứt.",0]]
+};
+var NEW_B5={
+B19:[["Hiện nay, ngoại giao kinh tế của Việt Nam có đóng góp tích cực cho phát triển đất nước, góp phần thực hiện hiệu quả đường lối của Đảng.",1],
+["Sau Chiến tranh lạnh, một trong những xu thế là các quốc gia đều điều chỉnh chiến lược lấy phát triển kinh tế làm trung tâm.",1],
+["Sau Chiến tranh lạnh, chính trị trở thành nhân tố quyết định sức mạnh tổng hợp của từng quốc gia và đóng vai trò trung tâm trong quan hệ quốc tế.",0],
+["Vì sự phát triển kinh tế các quốc gia đã đẩy mạnh chạy đua vũ trang để tiến hành mở rộng thuộc địa và thị trường tiêu thụ hàng hóa.",0]],
+B20:[["ASEAN ra đời góp phần duy trì hòa bình, ổn định và thịnh vượng chung trong khu vực.",1],
+["Bru-nây là một trong những thành viên sáng lập của tổ chức ASEAN.",0],
+["ASEAN và Liên minh châu Âu (EU) là những tổ chức liên kết có cùng thể chế chính trị.",0],
+["Sự khởi sắc của ASEAN được đánh dấu bằng hiệp ước Bali (2/1976).",1]]
+};
+var NEW_B6={
+B21:[["Liên bang Xô viết giải tán kéo theo sự sụp đổ của Trật tự hai cực Ianta.",1],
+["Cuộc đảo chính ngày19-8-1991 ở Liên Xô nhằm lật đổ chế độ xã hội chủ nghĩa.",0],
+["Sau năm 1991, chế độ xã hội chủ nghĩa chỉ còn tồn tại ở một số nước châu Á và Mĩ la tinh.",1],
+["Chế độ xã hội chủ nghĩa sụp đổ ở Liên Xô chứng tỏ chủ nghĩa xã hội không còn phù hợp với xu thế phát triển của thế giới.",0]]
+};
+var NEW_B7={
+B22:[["Một trong những bài học rút ra từ thời kì chiến tranh lạnh cho tất cả các quốc gia là không nên tập trung vào phát triển quân sự, quốc phòng đất nước.",0],
+["Trong thời kì chiến tranh lạnh và sau thời kì chiến tranh lạnh, nội dung của quan hệ quốc tế có sự điều chỉnh từ chỗ lấy yếu tố quân sự sang lấy yếu tố kinh tế là trọng tâm.",1],
+["Sau thời kì chiến tranh lạnh, Xô – Mỹ lấy đối đầu về chính trị - quân sự là chủ yếu, trong khi đó Đức và Nhật Bản lại lấy hợp tác và cạnh tranh về kinh tế - chính trị là chủ yếu.",0],
+["Kinh tế và khoa học – kĩ thuật là hai yếu tố chủ yếu tạo nên sức mạnh tổng hợp của một quốc gia sau khi chiến tranh lạnh chấm dứt.",1]]
+};
+Object.assign(B, NEW_B7);
+Object.assign(B, NEW_B6);
+Object.assign(B, NEW_B5);
+Object.assign(B, NEW_B4);
 Object.assign(B, NEW_B3);
 Object.assign(B, NEW_B2);
 Object.assign(B, NEW_B);
@@ -257,6 +366,27 @@ B_BIENDONG:[["Sự sụp đổ của trật tự hai cực Ianta xuất phát t�
 };
 Object.assign(B, BIENDONG_B);
 Object.assign(B, LHQ_B);
+B.B9_22=B.B9.concat(B.B22);
+B.B_BANGGD=[["Liên Xô và Mỹ đẩy mạnh đối thoại, hợp tác là không phải là biểu hiện của suy yếu trật tự thế giới hai cực I-an-ta.",0],
+["Sự sụp đổ của trật tự thế giới hai cực Ianta là kết cục của cuộc chạy đua vũ trang giữa Mĩ và Liên Xô.",0],
+["Trật tự thế giới hai cực Ianta thực chất là sự tranh giành ảnh hưởng của hai siêu cường Xô – Mĩ.",1],
+["Sự hình thành và phát triển các khối quân sự đối lập, chạy đua vũ trang diễn ra trong giai đoạn từ 1945 - đầu những năm 70 (XX).",1]];
+B.B20_BANG=B.B20.concat([["Quá trình hình thành và phát triển của ASEAN không chịu tác động bởi cách mạng khoa học công nghệ.",0],
+["Là thành viên của ASEAN, Việt Nam đã có nhiều đóng góp trong việc xây dựng Cộng đồng ASEAN.",1],
+["Hiện nay, các thành viên của ASEAN đều là những quốc gia trong khu vực Đông Nam Á.",0],
+["Tổ chức ASEAN được thành lập vào năm 1967.",1]]);
+B.B_DAIHOI12=[["Trật tự thế giới đa cực sẽ cản trở quá trình toàn cầu hóa, xu thế phát triển kinh tế, đối thoại, hợp tác trong quan hệ quốc tế.",0],
+["Trong trật tự thế giới đa cực không một quốc gia nào có quyền lực áp đảo đối với các quốc gia khác và chi phối sự phát triển của thế giới.",1],
+["Sự hình thành trật tự thế giới đa cực là một tiến trình lịch sử chủ quan với sự nổi lên của các cường quốc, sự gia tăng vai trò của các trung tâm, tổ chức quốc tế.",0],
+["Biểu hiện của xu thế đa cực là sự gia tăng sức mạnh, tầm ảnh hưởng và vị thế kinh tế, chính trị, quân sự, đối ngoại của các nước lớn.",1]];
+B.B424=B.B8.concat(B.B16).concat([["Sức mạnh tổng hợp (trong đó quân sự là sức mạnh trụ cột) là yếu tố quyết định vị thế của các cường quốc trong trật tự thế giới mới.",0],
+["Sự phát triển của phong trào đấu tranh vì hòa bình, dân chủ và tiến bộ xã hội trên toàn thế giới là yếu tố góp phần kìm hãm sự chi phối của các cường quốc.",1],
+["Sau năm 1991, một trật tự thế giới mới đang dần dần được hình thành.",1],
+["Trật tự thế giới mới đang dần dần được hình thành không phụ thuộc vào sự phát triển của cách mạng khoa học - kĩ thuật.",0]]);
+B.B_ASEAN=[["ASEAN đã thúc đẩy hợp tác kinh tế, văn hoá, xã hội giữa các nước thành viên.",1],
+["ASEAN đã đạt được sự đồng thuận trong giải quyết vấn đề tranh chấp ở Biển Đông.",0],
+["Sự ra đời của tổ chức ASEAN là biểu hiện của xu thế hoà hoãn Đông – Tây.",0],
+["Hiệp hội các quốc gia Đông Nam Á (ASEAN) thành lập tại Băng Cốc (Thái Lan).",1]];
  
 function detectQuestion1(qText){
   var t=norm(qText);
@@ -281,15 +411,27 @@ function matchToTarget(opts,target){
  
 function detectBlock(t){
   t=t.toLowerCase();
+  if(t.includes('còn tùy thuộc ở nhiều nhân tố')||t.includes('tr.424')||t.includes('trang 424'))return'B424';
+  if(t.includes('đại hội xii của đảng cộng sản việt nam')||t.includes('cục diện thế giới theo xu hướng đa cực'))return'B_DAIHOI12';
+  if(t.includes('quá trình ra đời và phát triển của hiệp hội các quốc gia đông nam á'))return'B20_BANG';
+  if(t.includes('bảng dữ kiện về quá trình tồn tại')||t.includes('giai đoạn xác lập và phát triển của trật tự thế giới hai cực'))return'B_BANGGD';
+  if(t.includes('tuyên bố asean')||t.includes('cộng đồng các quốc gia đông nam á hoà bình')||t.includes('cộng đồng các quốc gia đông nam á hòa bình'))return'B_ASEAN';
   if(t.includes('phân chia nhau phạm vi thế lực trên cơ sở thoả thuận'))return'B2';
   if(t.includes('vĩ tuyến 38'))return'B_VT38';
   if(t.includes('xakhalin'))return'B_XAKHALIN';
   if(t.includes('phần lan trở thành hai nước trung lập'))return'B_DUCTRUNGLAP';
-  if(t.includes('tr.401'))return'B9';
-  if(t.includes('tr.424'))return'B8';
+  if(t.includes('một bị thương, một bị mất')||t.includes('nics')||t.includes('tr.401'))return'B9_22';
+  
   if(t.includes('trung tâm điều hoà các nỗ lực quốc tế'))return'B1';
   if(t.includes('cộng hoà nhân dân trung hoa ra đời'))return'B13';
   if(t.includes('vành đai an toàn')||t.includes('3 mục tiêu cơ bản'))return'B14';
+  if(t.includes('thực sự bị phá vỡ'))return'B15';
+  
+  if(t.includes('thúc đẩy mạnh mẽ quá trình toàn cầu hóa'))return'B17';
+  if(t.includes('thông cáo thượng hải'))return'B18';
+  if(t.includes('cạnh tranh sức mạnh tổng hợp quốc gia thay thế cho chạy đua vũ trang'))return'B19';
+  if(t.includes('lào và mi-an-ma gia nhập asean')||t.includes('bru-nây gia nhập asean')||t.includes('cap-pu-chia gia nhập asean'))return'B20_BANG';
+  if(t.includes('19-8-1991')||t.includes('cực liên xô'))return'B21';
   if(t.includes('hiệp ước abm')||t.includes('salt'))return'B11';
   if(t.includes('chủ nghĩa tơrunan')||t.includes('sứ mạng lãnh đạo thế giới tự do'))return'B12';
   if(t.includes('san francisco')||t.includes('truman'))return'B6';
@@ -486,6 +628,64 @@ function run(){
   }
   document.getElementById('out').innerHTML=html;
 }
+
+/* ===== v5: tự động dán ===== */
+var inpEl=document.getElementById('inp');
+var autoPasteEl=document.getElementById('autoPaste');
+var autoRunEl=document.getElementById('autoRun');
+var pstatusEl=document.getElementById('pstatus');
+var lastClip=null;
+
+function pstatus(m){pstatusEl.textContent=m;}
+function saveOpt(k,v){try{localStorage.setItem(k,v?'1':'0');}catch(e){}}
+function loadOpt(k,def){try{var v=localStorage.getItem(k);return v===null?def:v==='1';}catch(e){return def;}}
+
+function applyPasted(text,note){
+  inpEl.value=text;
+  lastClip=text;
+  pstatus(note);
+  if(autoRunEl.checked) run();
+}
+
+// manual=true: bấm nút (luôn dán, kể cả cùng nội dung); manual=false: tự động
+async function pasteNow(manual){
+  if(!manual && !autoPasteEl.checked) return;
+  if(!navigator.clipboard || !navigator.clipboard.readText){
+    pstatus('Trình duyệt không cho đọc clipboard tự động. Hãy nhấn Ctrl+V vào trang.');
+    return;
+  }
+  try{
+    var text=await navigator.clipboard.readText();
+    if(!text.trim()){ if(manual) pstatus('Clipboard đang trống.'); return; }
+    if(!manual && text===lastClip) return; // không dán lại cùng một nội dung
+    applyPasted(text, manual?'Đã dán từ clipboard.':'Đã tự động dán nội dung mới.');
+  }catch(err){
+    pstatus('Chưa đọc được clipboard. Hãy cho phép quyền truy cập, hoặc nhấn Ctrl+V vào trang.');
+  }
+}
+
+autoPasteEl.addEventListener('change',function(){
+  saveOpt('ls_autoPaste',autoPasteEl.checked);
+  if(autoPasteEl.checked){pstatus('Đã bật tự động dán.');pasteNow(false);}
+  else pstatus('Đã tắt tự động dán.');
+});
+autoRunEl.addEventListener('change',function(){saveOpt('ls_autoRun',autoRunEl.checked);});
+
+window.addEventListener('focus',function(){pasteNow(false);});
+document.addEventListener('visibilitychange',function(){if(!document.hidden)pasteNow(false);});
+
+// Ctrl+V ở bất kỳ đâu trên trang (không cần xin quyền) khi đang bật tự động dán
+document.addEventListener('paste',function(e){
+  if(!autoPasteEl.checked) return;
+  var text=e.clipboardData && e.clipboardData.getData('text');
+  if(!text || !text.trim()) return;
+  e.preventDefault();
+  applyPasted(text,'Đã nhận nội dung từ Ctrl+V.');
+});
+
+autoPasteEl.checked=loadOpt('ls_autoPaste',false);
+autoRunEl.checked=loadOpt('ls_autoRun',true);
+if(autoPasteEl.checked) pasteNow(false);
 </script>
 </body>
 </html>

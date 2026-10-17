@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chấm đề Ianta v5</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ntz.css">
+</head>
+<body>
+<div class="version-wrap" id="versionWrap" hidden>
+  <button type="button" id="versionBtn" aria-haspopup="true" aria-expanded="false" aria-controls="versionPanel">🏷️ <span id="versionName"></span></button>
+  <div class="version-panel" id="versionPanel" hidden>
+    <div class="vp-list" id="versionList"></div>
+    <div class="vp-log" id="versionLog"></div>
+  </div>
+</div>
+<h1>📚 Chấm đề Lịch sử — "Trật tự hai cực Ianta"</h1>
+<div class="dtline">Dán toàn bộ đề (đúng định dạng bạn hay copy) vào ô dưới, bấm Chấm.</div>
+<textarea id="inp" placeholder="Dán đề vào đây..."></textarea>
+<div class="opts">
+  <label><input type="checkbox" id="autoPaste"> Tự động dán từ clipboard</label>
+  <label><input type="checkbox" id="autoRun"> Tự chấm ngay sau khi dán</label>
+</div>
+<div class="row">
+  <button onclick="run()">✅ Chấm đáp án</button>
+  <button class="btn2" onclick="pasteNow(true)">📋 Dán từ clipboard</button>
+</div>
+<div id="pstatus" role="status"></div>
+<div id="out"></div>
+<div id="notice"></div>
+
+<script src="js/config.js"></script>
+<script src="js/versions.js"></script>
+<script src="data/answers.js"></script>
+<script src="data/statements.js"></script>
+<script src="data/lesson5.js"></script>
+<script src="data/link-grader.js"></script>
+<script src="js/app.js"></script>
+<script src="js/ntz-cards.js"></script>
+<script src="js/version-ui.js"></script>
+<script src="js/ntz-ui.js"></script>
+<script src="js/ntz-settings.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ngân hàng đáp án</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/ntz.css">
+</head>
+<body>
+<main class="bank">
+  <div class="bank-top">
+    <a class="bank-link" id="backLink" href="index.html">← Quay lại chấm đề</a>
+    <span class="bank-ver" id="bankVer"></span>
+  </div>
+  <h1>📚 Ngân hàng đáp án</h1>
+
+  <div class="notice" id="bankDisabled" hidden>
+    <strong>Trang này không có ở phiên bản này</strong>
+    <p>Ngân hàng đáp án có từ phiên bản LSU Alpha 1.</p>
+    <small><a href="bank.html#/lsu-alpha1">Chuyển sang LSU Alpha 1</a></small>
+  </div>
+
+  <div id="bankApp" hidden>
+    <div class="bank-chips" id="modeChips" role="group" aria-label="Chế độ xem" hidden></div>
+    <input type="search" id="q" class="bank-search" placeholder="Tìm câu hỏi, đáp án, mệnh đề hoặc ID câu..." aria-label="Tìm trong ngân hàng" autocomplete="off">
+
+    <!-- Chế độ cơ bản: nhận diện câu hỏi + đáp án đúng, và các bộ mệnh đề Đúng/Sai -->
+    <div id="basicView">
+      <div class="bank-chips" id="partChips" role="group" aria-label="Lọc theo phần"></div>
+    </div>
+
+    <!-- Chế độ nâng cao: câu hỏi đầy đủ, đáp án đúng và sai, ID câu, chia theo bài -->
+    <div id="advView" hidden>
+      <div class="bank-chips" id="lessonChips" role="group" aria-label="Chọn bài"></div>
+    </div>
+
+    <div class="bank-count" id="count" role="status"></div>
+
+    <div id="basicLists">
+      <section id="sec1">
+        <h2>Phần I · Chọn một đáp án đúng</h2>
+        <div id="list1"></div>
+      </section>
+      <section id="sec2">
+        <h2>Phần II · Đúng / Sai</h2>
+        <div id="list2"></div>
+      </section>
+    </div>
+    <div id="advList" hidden></div>
+    <div class="bank-empty" id="empty" hidden>Không tìm thấy kết quả phù hợp.</div>
+  </div>
+</main>
+
+<script>window.KEEP_TITLE = true;</script>
+<script src="js/config.js"></script>
+<script src="js/versions.js"></script>
+<script src="data/answers.js"></script>
+<script src="data/statements.js"></script>
+<script src="data/lesson4.js"></script>
+<script src="data/lesson5.js"></script>
+<script src="data/link-grader.js"></script>
+<script src="js/bank.js"></script>
+</body>
+</html>

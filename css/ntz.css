@@ -1,0 +1,237 @@
+/* Giao diện NTZ Release. Mọi luật ở đây nằm trong phạm vi .is-ntz (do versions.js gắn khi chọn bản NTZ),
+   nên v4, v5 và LSU Alpha 1 không bị ảnh hưởng. Nạp SAU style.css. */
+
+/* ---------- bảng màu ---------- */
+:root.is-ntz{
+  --bg:#f6f8fa;--card:#ffffff;--text:#1f2328;--sub:#59636e;--border:#d1d9e0;--accent:#0969da;--ok:#1a7f37;--bad:#cf222e;
+  --ring:rgba(9,105,218,.22);--ntz-send:#1f6feb;--ntz-auto:#1f9d4d;
+}
+@media (prefers-color-scheme: dark){
+  :root.is-ntz:not([data-theme="light"]){
+    --bg:#0d1117;--card:#151b23;--text:#e6edf3;--sub:#9198a1;--border:#30363d;--accent:#4493f8;--ok:#3fb950;--bad:#f85149;
+    --ring:rgba(68,147,248,.28);--ntz-send:#2f7df6;--ntz-auto:#2ea043;
+  }
+}
+:root.is-ntz[data-theme="dark"]{
+  --bg:#0d1117;--card:#151b23;--text:#e6edf3;--sub:#9198a1;--border:#30363d;--accent:#4493f8;--ok:#3fb950;--bad:#f85149;
+  --ring:rgba(68,147,248,.28);--ntz-send:#2f7df6;--ntz-auto:#2ea043;
+}
+
+/* ---------- trang chính ---------- */
+.is-ntz body.ntz-home{max-width:780px;margin:0 auto;padding:20px 16px 64px;font-size:15px;line-height:1.5;}
+.is-ntz .ntz-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin-bottom:16px;}
+.is-ntz .ntz-titles{min-width:0;flex:1 1 280px;}
+.is-ntz .ntz-titles h1{margin:0;font-size:1.06rem;font-weight:650;letter-spacing:-.005em;}
+.is-ntz .ntz-titles .dtline{margin-top:2px;font-size:13px;color:var(--sub);}
+.is-ntz .ntz-head .version-wrap{margin:0;flex:none;}
+.is-ntz #versionBtn{padding:5px 10px;border-radius:7px;font:500 12.5px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+.is-ntz .bank-link{padding:5px 10px;border-radius:7px;font-size:13px;}
+
+/* ---------- đầu trang tối giản (cờ ntzMinimalHeader → body.ntz-min-head) ----------
+   Không còn tiêu đề: các nút nằm bên phải. Khi màn hình hẹp hơn ngưỡng bên dưới, phần tên của nút bị ẩn,
+   mỗi nút chỉ còn icon trong một ô vuông bo góc. Muốn đổi ngưỡng thì sửa số 520px. */
+.is-ntz body.ntz-min-head .ntz-head{justify-content:flex-end;align-items:center;margin-bottom:12px;}
+.is-ntz body.ntz-min-head .version-wrap #versionBtn,
+.is-ntz body.ntz-min-head .version-wrap .bank-link{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+}
+.is-ntz .ntz-sr-only{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
+}
+@media (max-width:520px){
+  .is-ntz body.ntz-min-head .version-wrap #versionBtn,
+  .is-ntz body.ntz-min-head .version-wrap .bank-link{
+    width:36px;height:36px;padding:0;border-radius:10px;gap:0;
+  }
+  .is-ntz body.ntz-min-head .version-wrap .ntz-lbl{display:none;}
+  .is-ntz body.ntz-min-head .version-wrap .ntz-ico{font-size:17px;line-height:1;}
+}
+
+/* ---------- ô nhập + nút gửi ---------- */
+.is-ntz .ntz-box{
+  display:flex;align-items:flex-end;gap:8px;padding:6px 6px 6px 14px;
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.is-ntz .ntz-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring);}
+.is-ntz .ntz-box #inp{
+  flex:1;min-width:0;width:auto;min-height:0;height:36px;margin:0;padding:7px 0;
+  border:0;border-radius:0;background:transparent;color:var(--text);
+  font:inherit;font-size:14.5px;line-height:22px;resize:none;outline:none;overflow-y:hidden;
+  scrollbar-width:thin;scrollbar-color:var(--border) transparent;
+  /* chữ ở sát mép trên mờ dần khi nội dung đã cuộn qua; --fade do ntz-ui.js cập nhật theo vị trí cuộn */
+  --fade:0px;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade));
+          mask-image:linear-gradient(to bottom,transparent 0,#000 var(--fade));
+}
+.is-ntz .ntz-box #inp::placeholder{color:var(--sub);opacity:.75;}
+
+.is-ntz .ntz-send{
+  position:relative;isolation:isolate;overflow:hidden;flex:none;
+  display:grid;place-items:center;width:46px;height:34px;margin:1px 0;padding:0;
+  border:0;border-radius:9px;background:var(--ntz-send);color:#fff;cursor:pointer;
+  transition:filter .15s,transform .08s;
+}
+.is-ntz .ntz-send:hover{filter:brightness(1.09);}
+.is-ntz .ntz-send:active{transform:translateY(1px);filter:brightness(.96);}
+.is-ntz .ntz-send:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.is-ntz .ntz-send svg{position:relative;z-index:2;width:18px;height:18px;}
+/* chế độ tự chấm: xanh lá, hai bên tối dần, có vệt sáng quét ngang */
+.is-ntz .ntz-send::before{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .3s;
+  background:linear-gradient(90deg,rgba(0,0,0,.8) 0,rgba(0,0,0,0) 30%,rgba(0,0,0,0) 70%,rgba(0,0,0,.8) 100%),var(--ntz-auto);
+}
+.is-ntz .ntz-send::after{
+  content:"";position:absolute;top:0;bottom:0;left:0;width:38%;z-index:1;opacity:0;pointer-events:none;
+  transform:translateX(-150%) skewX(-22deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
+}
+.is-ntz .ntz-send[data-auto="1"]::before{opacity:1;}
+.is-ntz .ntz-send[data-auto="1"]::after{opacity:1;animation:ntzShine 2.8s ease-in-out infinite;}
+@keyframes ntzShine{0%{transform:translateX(-150%) skewX(-22deg);}55%,100%{transform:translateX(330%) skewX(-22deg);}}
+@media (prefers-reduced-motion: reduce){
+  .is-ntz .ntz-send[data-auto="1"]::after{animation:none;opacity:0;}
+}
+
+/* ---------- hàng công cụ dưới ô nhập ---------- */
+.is-ntz .ntz-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:9px;font-size:13px;color:var(--sub);}
+.is-ntz .ntz-tools .spacer{flex:1;}
+.is-ntz .ntz-ghost{
+  display:inline-flex;align-items:center;gap:6px;margin:0;padding:4px 10px;
+  border:1px solid var(--border);border-radius:7px;background:transparent;color:var(--text);font-size:13px;cursor:pointer;
+}
+.is-ntz .ntz-ghost:hover{border-color:var(--sub);}
+.is-ntz .ntz-ghost:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.is-ntz .ntz-ghost svg{width:14px;height:14px;}
+.is-ntz .ntz-tools label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none;color:var(--text);}
+.is-ntz .ntz-tools input[type=checkbox]{
+  appearance:none;-webkit-appearance:none;position:relative;flex:none;width:28px;height:16px;margin:0;
+  border-radius:99px;background:var(--border);cursor:pointer;transition:background .18s;
+}
+.is-ntz .ntz-tools input[type=checkbox]::after{
+  content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .18s;
+}
+.is-ntz .ntz-tools input[type=checkbox]:checked{background:var(--accent);}
+.is-ntz .ntz-tools input[type=checkbox]:checked::after{transform:translateX(12px);}
+.is-ntz .ntz-tools input[type=checkbox]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.is-ntz .ntz-state{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;}
+.is-ntz .ntz-state::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--border);transition:background .25s;}
+.is-ntz .ntz-state[data-on="1"]{color:var(--text);}
+.is-ntz .ntz-state[data-on="1"]::before{background:var(--ntz-auto);box-shadow:0 0 0 3px rgba(46,160,67,.2);}
+.is-ntz #pstatus{min-height:0;margin-top:6px;font-size:12.5px;}
+.is-ntz #pstatus:empty{display:none;}
+
+.is-ntz .ntz-ghost:disabled{opacity:.4;cursor:default;}
+.is-ntz .ntz-ghost:disabled:hover{border-color:var(--border);}
+
+/* ---------- kết quả ---------- */
+.is-ntz #out{margin-top:6px;}
+.is-ntz .result{margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--card);}
+.is-ntz .result h3{margin:0 0 8px;font-size:11.5px;font-weight:600;letter-spacing:.07em;color:var(--sub);}
+.is-ntz .pack{font-size:14px;line-height:1.7;}
+.is-ntz .warn{font-size:12.5px;}
+.is-ntz .notice{margin-top:18px;padding:10px 14px;border-radius:10px;font-size:13.5px;}
+.is-ntz .notice strong{font-size:13px;font-weight:600;margin-bottom:2px;}
+.is-ntz .notice p{font-size:13.5px;color:var(--text);}
+.is-ntz .notice small{margin-top:6px;font-size:12px;}
+
+/* ---------- kết quả nằm phía trên ô nhập (cờ ntzResultTop → body.ntz-top-result) ---------- */
+.is-ntz body.ntz-top-result #out{margin:0 0 12px;}
+.is-ntz body.ntz-top-result #out:empty{display:none;}
+.is-ntz body.ntz-top-result #out .result:first-child{margin-top:0;}
+
+/* ---------- kết quả dạng thẻ (cờ ntzCards → js/ntz-cards.js) ----------
+   Mỗi màu có hai sắc độ dạng "r,g,b": --rgb (cơ bản) và --rgbd (tối hơn) để khung nối nhấp nháy giữa hai sắc.
+   Kích thước lấy từ cài đặt của người dùng (js/ntz-settings.js đặt --u-w, --u-h, --u-k trên <html>);
+   chưa chỉnh gì thì dùng mặc định bên dưới. --k = tỉ lệ scale, nhân vào mọi kích thước của khung. */
+:root.is-ntz{--ntz-warn:#ca8a04;}
+@media (prefers-color-scheme: dark){:root.is-ntz:not([data-theme="light"]){--ntz-warn:#facc15;}}
+:root.is-ntz[data-theme="dark"]{--ntz-warn:#facc15;}
+
+.is-ntz .ntz-cards{
+  --k:var(--u-k,1);
+  --cw:calc(var(--u-w,58) * var(--k) * 1px);     /* chiều ngang một khung (tối đa; màn hẹp tự co lại) */
+  --ch:calc(var(--u-h,64) * var(--k) * 1px);     /* chiều cao một khung */
+  --gap:calc(8px * var(--k));
+  --nh:calc(23px * var(--k));                    /* chiều cao vùng số câu */
+  --fa:calc(22px * var(--k));                    /* cỡ chữ đáp án */
+  --fn:calc(11.5px * var(--k));                  /* cỡ chữ số câu */
+}
+.is-ntz .result.ntz-cards{overflow:visible;}
+.is-ntz .ntz-grid{
+  display:grid;grid-template-columns:repeat(var(--cols,8),minmax(0,var(--cw)));
+  gap:var(--gap);padding:10px 12px;   /* chừa chỗ cho glow, tránh bị cắt mép */
+}
+.is-ntz .np-row{display:flex;align-items:center;gap:12px;padding:10px 12px;}
+.is-ntz .np-label{flex:none;width:52px;font-size:13px;font-weight:600;color:var(--sub);}
+.is-ntz .np-cells{display:grid;grid-template-columns:repeat(4,minmax(0,var(--cw)));gap:var(--gap);}
+/* người dùng đã chỉnh chiều ngang: giữ đúng cỡ đã chọn, màn hẹp thì cuộn ngang thay vì co lại */
+.is-ntz.ntz-fixed-w .ntz-grid{grid-template-columns:repeat(var(--cols,8),var(--cw));overflow-x:auto;padding:18px;}
+.is-ntz.ntz-fixed-w .np-cells{grid-template-columns:repeat(4,var(--cw));}
+.is-ntz.ntz-fixed-w .np-row{flex-wrap:wrap;}
+
+.is-ntz .nc{
+  --rgb:128,128,128;--rgbd:90,90,90;
+  display:flex;flex-direction:column;height:var(--ch);min-width:0;overflow:hidden;
+  border:1.5px solid rgba(var(--rgb),.8);border-radius:calc(9px * var(--k));
+  background:linear-gradient(rgba(var(--rgb),.10),rgba(var(--rgb),.10)),var(--card);
+  box-shadow:0 0 11px 1px rgba(var(--rgb),.5);
+}
+.is-ntz .nc-a{--rgb:239,68,68;--rgbd:153,27,27;}      /* A: đỏ */
+.is-ntz .nc-b{--rgb:250,204,21;--rgbd:161,98,7;}     /* B: vàng */
+.is-ntz .nc-c{--rgb:59,130,246;--rgbd:30,64,175;}    /* C: dương */
+.is-ntz .nc-d{--rgb:34,197,94;--rgbd:21,128,61;}     /* D: lá */
+.is-ntz .nc-t{--rgb:34,197,94;--rgbd:21,128,61;}     /* Phần II: Đúng = xanh lá */
+.is-ntz .nc-f{--rgb:239,68,68;--rgbd:153,27,27;}     /* Phần II: Sai = đỏ */
+.is-ntz .nc-q{background:var(--card);border-color:var(--border);box-shadow:none;}  /* chưa nhận diện được */
+
+.is-ntz .nc-nums{
+  flex:none;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:var(--gap);align-items:center;
+  height:var(--nh);border-bottom:1px solid rgba(var(--rgb),.3);
+  font-size:var(--fn);color:var(--sub);text-align:center;font-variant-numeric:tabular-nums;
+}
+.is-ntz .nc-ans{
+  flex:1;display:grid;place-items:center;
+  font-size:var(--fa);line-height:1;font-weight:800;color:var(--text);
+}
+/* khung nối: mỗi câu một chữ, nằm đúng cột dưới số câu của nó (cùng gap với hàng số) */
+.is-ntz .nc-ans-multi{gap:var(--gap);}
+.is-ntz .nc-ans-multi>span{display:block;text-align:center;}
+/* chưa chắc: chữ vàng, thường, không đậm */
+.is-ntz .nc-low .nc-ans{font-weight:400;color:var(--ntz-warn);}
+
+/* khung nối: glow sáng ↔ tối nhẹ nhàng, lặp lại */
+.is-ntz .nc-merge{animation:ntzGlow 3.6s ease-in-out infinite;}
+@keyframes ntzGlow{
+  0%,100%{border-color:rgba(var(--rgb),.9);box-shadow:0 0 14px 2px rgba(var(--rgb),.6);}
+  50%{border-color:rgba(var(--rgbd),.85);box-shadow:0 0 8px 0 rgba(var(--rgbd),.5);}
+}
+@media (prefers-reduced-motion: reduce){.is-ntz .nc-merge{animation:none;}}
+
+@media (max-width:520px){
+  .is-ntz .ntz-cards{
+    --ch:calc(var(--u-h,56) * var(--k) * 1px);
+    --gap:calc(4px * var(--k));--nh:calc(20px * var(--k));--fa:calc(19px * var(--k));--fn:calc(10.5px * var(--k));
+  }
+  .is-ntz .ntz-grid{padding:8px 6px;}
+  .is-ntz .np-row{padding:8px 6px;gap:8px;}
+  .is-ntz .np-label{width:44px;font-size:12px;}
+  .is-ntz .nc{border-radius:calc(7px * var(--k));box-shadow:0 0 8px 1px rgba(var(--rgb),.5);}
+}
+
+/* ---------- khung cài đặt kích thước đáp án (cờ ntzCardSettings → js/ntz-settings.js) ---------- */
+.is-ntz .ntz-settings{margin-top:22px;border:1px solid var(--border);border-radius:10px;background:var(--card);}
+.is-ntz .ntz-settings>summary{cursor:pointer;list-style:none;padding:10px 14px;font-size:13.5px;font-weight:600;color:var(--sub);user-select:none;}
+.is-ntz .ntz-settings>summary::-webkit-details-marker{display:none;}
+.is-ntz .ntz-settings>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:10px;}
+.is-ntz .ntz-settings[open]>summary{color:var(--text);border-bottom:1px solid var(--border);}
+.is-ntz .ntz-set-body{display:flex;flex-direction:column;gap:12px;padding:12px 14px 14px;}
+.is-ntz .ntz-set-row{display:grid;grid-template-columns:96px minmax(0,1fr) 54px;align-items:center;gap:10px;font-size:13px;}
+.is-ntz .ntz-set-row input[type=range]{width:100%;margin:0;accent-color:var(--accent);cursor:pointer;}
+.is-ntz .ntz-set-val{text-align:right;font-size:12.5px;color:var(--sub);font-variant-numeric:tabular-nums;}
+.is-ntz .ntz-set-preview{padding:2px 0;overflow-x:auto;}
+.is-ntz .ntz-set-actions{display:flex;align-items:center;gap:10px;}
+.is-ntz .ntz-set-hint{font-size:12px;color:var(--sub);}
+@media (max-width:520px){.is-ntz .ntz-set-row{grid-template-columns:78px minmax(0,1fr) 48px;gap:8px;}}

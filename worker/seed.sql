@@ -1,0 +1,7 @@
+INSERT OR IGNORE INTO codes(code_hash,plan,max_uses,expires_at,note,created_at) VALUES('c5bd657c890d04b2f749a680cc844cac8825e111cd775df72b1b87662c0be04c','plus',NULL,NULL,'Mã cũ (chỉ có hash)',1795000000000);
+INSERT OR IGNORE INTO codes(code_hash,plan,max_uses,expires_at,note,created_at) VALUES('81575b5d0a0aeb7278b7983b74c7c6924f24778df5078b687a34366f5dcf8abe','plus',NULL,NULL,'Mã cũ (chỉ có hash)',1795000000000);
+INSERT OR IGNORE INTO codes(code_hash,plan,max_uses,expires_at,note,created_at) VALUES('9f39998566919fe6356186c6d587372bad06ddbfa3907607b3ab91cd5a9de8c5','plus',NULL,NULL,'Mã cũ (chỉ có hash)',1795000000000);
+INSERT OR IGNORE INTO codes(code_hash,plan,max_uses,expires_at,note,created_at) VALUES('631b7ebc40dc5d7b701fad334790643845c81af582ab1cdfb6a9e44082af86f7','promax',NULL,NULL,'Mã cũ (chỉ có hash)',1795000000000);
+INSERT OR IGNORE INTO codes(code_hash,plan,max_uses,expires_at,note,created_at) VALUES('e175a66185ec2c48394c551753914760c085babdae9783e176ecfbcca254957b','promax',NULL,NULL,'Mã cũ (chỉ có hash)',1795000000000);
+INSERT OR IGNORE INTO codes(code_hash,plan,max_uses,expires_at,note,created_at) VALUES('8d59eaccc1e3939ced8208be8750f921fccf69ecfd7dc7ee76f9ce2e460e1e84','promax',NULL,NULL,'Mã cũ (chỉ có hash)',1795000000000);
+INSERT OR IGNORE INTO codes(code_hash,code_plain,plan,max_uses,expires_at,note,created_at) VALUES('f7913548fde6f7641ad97727ed925195425503a1647933ee96671afbe29b4661','RELESE','plus',NULL,1795626000000,'Dùng thử 7 ngày, hết hạn 00:00 26/11/2026',1795000000000);

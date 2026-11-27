@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="vi" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Admin · Sử Quán</title><link rel="icon" href="asset/favicon.png"><link rel="stylesheet" href="css/style.css?v=2"><link rel="stylesheet" href="css/su.css?v=rr10"><link rel="stylesheet" href="css/rankup.css?v=1u"></head>
+<body data-page="admin"><main class="wrap">
+<header class="pg-head"><div class="eyebrow">Quản trị</div><h1 class="pg-title">ADMIN</h1><p>Tạo, sửa, tắt hoặc xóa mã kích hoạt và thu hồi khóa gói.</p></header>
+<section class="glass al" id="aLogin" hidden>
+<div class="al-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.2-8 11-4.6-1.8-8-6-8-11V5z"/><path d="M9 12l2.2 2.2L15.5 9.8"/></svg></div><div class="al-eyebrow">KHU VỰC QUẢN TRỊ</div><h2>Đăng nhập admin</h2>
+<p class="al-sub">Nhập mã admin để kích hoạt trình duyệt này. Đã có admin khác? Hãy mở link thêm thiết bị do admin chủ gửi.</p>
+<div class="al-field"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><input id="aCode" type="password" placeholder="Mã admin" autocomplete="off" spellcheck="false"><button type="button" class="al-eye" id="aEye" title="Hiện hoặc ẩn mã" aria-label="Hiện hoặc ẩn mã"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/></svg></button><button type="button" class="cf-paste" title="Dán từ bộ nhớ tạm">Dán</button></div>
+<button type="button" class="al-go" id="aGo">Kích hoạt admin <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+<div id="aMsg" role="status"></div>
+<ul class="al-notes"><li>Mã admin chỉ nhập được một lần.</li><li>Thêm thiết bị bằng link dùng một lần, hết hạn sau 5 phút.</li><li>Phiên đầu tiên là chủ, không bị ai đăng xuất.</li></ul></section>
+<div id="aApp" hidden>
+<section class="glass d-box" id="aTest"><h3>Chế độ test · chỉ trình duyệt này</h3>
+<div class="t-row"><div><b>Tính năng admin</b><div class="d-sub" id="tOnTxt"></div></div><button type="button" class="sw" id="tSw" role="switch" aria-checked="true" aria-label="Bật tắt tính năng admin"><i></i></button></div>
+<div class="t-row" id="tPlanRow"><div><b>Gói của trình duyệt này</b><div class="d-sub">Chọn gói để dùng thử ngay mà không cần nhập mã. THẬT = theo mã/khóa đã kích hoạt.</div></div><div class="seg" id="tSeg"><button type="button" data-p="">THẬT</button><button type="button" data-p="basic">BASIC</button><button type="button" data-p="plus">PLUS</button><button type="button" data-p="promax">PROMAX</button></div></div>
+<div class="t-row"><div><b>Dọn dữ liệu để thử lại</b><div class="d-sub" id="tEff"></div></div><div class="d-actions"><button type="button" class="btn alt" id="tWipe">Xóa gói/khóa đã lưu</button><button type="button" class="btn alt" id="tUse">Reset lượt chấm hôm nay</button><button type="button" class="btn alt" id="tDev">Làm thiết bị mới</button></div></div>
+<div class="t-row"><div><b>Sao lưu / khôi phục dữ liệu trình duyệt</b><div class="d-sub">Mang quyền admin, khóa gói và cài đặt sang nơi khác (ví dụ từ bản mở từ ổ đĩa sang web thật). Bản sao lưu chứa quyền admin, hãy giữ kín.</div></div><div class="d-actions"><button type="button" class="btn alt" id="tBk">Sao chép bản sao lưu</button></div></div>
+<div class="cf raw"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></svg><input id="tRs" placeholder="Dán bản sao lưu (SQBK1:…)" autocomplete="off" spellcheck="false"><button type="button" class="cf-paste">Dán</button><button type="button" class="cf-go" id="tRsGo">Khôi phục</button></div>
+<div class="d-sub">Chỉ xóa dữ liệu trong trình duyệt này, không động đến mã hay khóa trên máy chủ. "Làm thiết bị mới" đổi mã thiết bị: nhập lại cùng một mã sẽ tính là thiết bị khác và trừ thêm 1 lượt.</div><div id="tMsg" role="status"></div></section>
+<section class="glass d-box" id="aFx"><h3>Xem trước hiệu ứng</h3>
+<div class="d-sub">Chỉ để xem lại. Không đổi gói, khóa hay dữ liệu thật.</div>
+<div class="t-row"><div><b>Mất gói (hạ cấp)</b><div class="d-sub">Thẻ quyền hạn bay vào, biểu tượng rơi xuống từng bậc. Chọn bậc cũ → bậc mới.</div></div><div class="d-actions" id="fxLoss"><button type="button" class="btn alt" data-f="admin" data-t="promax">ADMIN → PROMAX</button><button type="button" class="btn alt" data-f="admin" data-t="plus">ADMIN → PLUS</button><button type="button" class="btn alt" data-f="admin" data-t="basic">ADMIN → BASIC</button><button type="button" class="btn alt" data-f="promax" data-t="plus">PROMAX → PLUS</button><button type="button" class="btn alt" data-f="promax" data-t="basic">PROMAX → BASIC</button><button type="button" class="btn alt" data-f="plus" data-t="basic">PLUS → BASIC</button></div></div>
+<div class="t-row"><div><b>Nhận gói (mở khóa)</b><div class="d-sub">Hiệu ứng khi nhập mã thành công. Bấm Xác nhận để đóng, không tải lại trang.</div></div><div class="d-actions" id="fxGet"><button type="button" class="btn alt" data-k="basic">BASIC</button><button type="button" class="btn alt" data-k="plus">PLUS · 7 ngày</button><button type="button" class="btn alt" data-k="promax">PROMAX · vĩnh viễn</button><button type="button" class="btn alt" data-k="admin">ADMIN</button><button type="button" class="btn alt" data-k="low">Mã sắp hết lượt</button><button type="button" class="btn alt" data-k="one">Mã dùng 1 lần</button><button type="button" class="btn alt" data-k="key">Kích hoạt lại bằng khóa</button></div></div>
+<div class="t-row"><div><b>Thẻ mời kích hoạt (link #code / #keycode)</b><div class="d-sub">Danh thiếp ngang hiện khi mở link kích hoạt. Bản xem thử không kích hoạt thật.</div></div><div class="d-actions" id="fxInv"><button type="button" class="btn alt" data-i="basic">Mã BASIC</button><button type="button" class="btn alt" data-i="plus">Mã PLUS</button><button type="button" class="btn alt" data-i="promax">Mã PROMAX · 1 lượt</button><button type="button" class="btn alt" data-i="key">Khóa gói</button><button type="button" class="btn alt" data-i="bad">Mã sai</button></div></div>
+</section>
+<section class="glass d-box"><h3>Thông tin</h3><p class="d-sub" id="aInfo"></p>
+<div class="d-actions"><button type="button" class="btn alt" id="aReload">Tải lại</button><button type="button" class="btn alt" id="aTr">Thêm thiết bị admin (giữ phiên này)</button><button type="button" class="btn alt danger" id="aOth">Đăng xuất các phiên khác</button></div><div id="aTrOut" class="d-sub"></div></section>
+<section class="glass d-box"><h3>Phiên admin <span class="d-sub" id="sCount"></span></h3><p class="d-sub" id="aOwn"></p><div class="tblw"><table class="tbl" id="sTbl"></table></div></section>
+<section class="glass d-box"><h3>Tạo mã mới</h3>
+<div class="a-form">
+<label>Mã (để trống = tự sinh)<input id="nCode" autocomplete="off" spellcheck="false"></label>
+<label>Gói<select id="nPlan"><option value="plus">PLUS</option><option value="promax">PROMAX</option></select></label>
+<label>Số lượt tối đa (trống = không giới hạn)<input id="nMax" type="number" min="1"></label>
+<label>Gói kéo dài (ngày, trống = vĩnh viễn)<input id="nDays" type="number" min="1"></label>
+<label>Hạn nhập mã / trần hạn gói (trống = không)<input id="nExp" type="datetime-local"></label>
+<label>Ghi chú (người dùng sẽ thấy khi nhập mã)<input id="nNote" maxlength="200"></label></div>
+<button type="button" id="nGo">Tạo mã</button><div id="nMsg" role="status"></div></section>
+<section class="glass d-box"><h3>Mã đang có <span class="d-sub" id="cCount"></span></h3><div class="tblw"><table class="tbl" id="cTbl"></table></div></section>
+<section class="glass d-box"><h3>Khóa gói đang hoạt động <span class="d-sub" id="kCount"></span></h3><div class="tblw"><table class="tbl" id="kTbl"></table></div></section>
+<h2 class="d-sub" style="margin:26px 0 10px;letter-spacing:.18em">CONTRIBUTOR</h2><div id="ctAdmin"></div>
+</div><section class="glass d-box" id="aRank" hidden><h3>Xem trước hiệu ứng lên hạng</h3><p class="d-sub">Bấm một hạng để xem hiệu ứng như người dùng sẽ thấy khi đạt hạng đó. Hạng càng cao hiệu ứng càng nhiều lớp.</p><div class="ar-grid" id="arGrid"></div></section></main>
+<script src="js/sq-config.js?v=2"></script><script src="js/plans.js?v=lf2"></script><script src="js/unlock.js?v=lf2qrst"></script><script src="js/invite-card.js?v=1"></script><script src="js/site.js?v=lf4"></script><script src="js/theme-presets.js?v=3"></script><script src="js/theme.js?v=4"></script>
+<script>
+var LBL=(location.protocol==='file:'?'File trên máy':location.host)+' · '+(/Edg\//.test(navigator.userAgent)?'Edge':/Coc|coc_coc/.test(navigator.userAgent)?'Cốc Cốc':/Firefox/.test(navigator.userAgent)?'Firefox':/Chrome/.test(navigator.userAgent)?'Chrome':'Trình duyệt');
+var $=function(i){return document.getElementById(i);},TK='sq_admin',api=SQ.API,tok=localStorage.getItem(TK)||'';
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function fmt(t){return t?new Date(t).toLocaleString('vi-VN'):'—';}
+async function call(p,b){if(!api)return{ok:false,msg:'Chưa cấu hình máy chủ: điền địa chỉ Worker vào js/sq-config.js.'};
+ try{var r=await fetch(api+p,{method:'POST',headers:{'content-type':'application/json','x-admin':tok},body:JSON.stringify(b||{})});return await r.json();}catch(e){return{ok:false,msg:'Không kết nối được máy chủ.'};}}
+function login(show,msg){$('aLogin').hidden=!show;$('aApp').hidden=show;if(msg){$('aMsg').className='err';$('aMsg').textContent=msg;}}
+async function claim(){var r=await call('/api/admin/claim',{code:$('aCode').value,label:LBL});if(r.ok){tok=r.token;localStorage.setItem(TK,tok);sessionStorage.setItem('sq_fx','admin');location.reload();}else{$('aMsg').className='err';$('aMsg').textContent=r.msg;}}
+document.getElementById('aEye').onclick=function(){var i=document.getElementById('aCode');i.type=i.type==='password'?'text':'password';this.classList.toggle('on',i.type==='text');};$('aGo').onclick=claim;$('aCode').onkeydown=function(e){if(e.key==='Enter')claim();};
+function copy(t,b){navigator.clipboard.writeText(t).then(function(){var o=b.textContent;b.textContent='Đã chép';setTimeout(function(){b.textContent=o;},1000);},function(){prompt('Sao chép:',t);});}
+var base=SQ.site('index.html');
+async function load(){var r=await call('/api/admin/list');if(!r.ok){if(r.msg&&/đăng nhập/.test(r.msg)){localStorage.removeItem(TK);tok='';login(true,'Phiên admin không còn hiệu lực.');}else alert(r.msg);return;}
+ login(false);$('aInfo').textContent='Đang kết nối: '+api;
+ $('cCount').textContent='('+r.codes.length+')';$('kCount').textContent='('+r.keys.length+')';
+ var h='<tr><th>Mã</th><th>Gói</th><th>Lượt</th><th>Hạn</th><th>Ngày</th><th>TT</th><th>Ghi chú</th><th></th></tr>';
+ r.codes.forEach(function(c){var left=c.max_uses==null?'∞':(c.used+'/'+c.max_uses),exp=c.expires_at&&c.expires_at<r.now;
+  h+='<tr data-id="'+c.id+'"><td>'+(c.code_plain?'<code>'+esc(c.code_plain)+'</code>':'<i>(mã cũ #'+esc(c.h)+')</i>')+'</td><td>'+esc(c.plan.toUpperCase())+'</td><td>'+left+'</td><td>'+(exp?'<b class="bad">hết hạn</b> ':'')+fmt(c.expires_at)+'</td><td>'+(c.days||'—')+'</td><td>'+(c.active?'Bật':'<b class="bad">Tắt</b>')+'</td><td>'+esc(c.note)+'</td><td class="acts">'
+  +(c.code_plain?'<button class="mini" data-a="cp" data-v="'+esc(c.code_plain)+'">Chép mã</button><button class="mini" data-a="ln" data-v="'+esc(c.code_plain)+'">Chép link</button>':'')
+  +'<button class="mini" data-a="tg" data-v="'+(c.active?0:1)+'">'+(c.active?'Tắt':'Bật')+'</button><button class="mini" data-a="mx" data-v="'+(c.max_uses==null?'':c.max_uses)+'">Sửa lượt</button><button class="mini" data-a="dl">Xóa</button></td></tr>';});
+ $('cTbl').innerHTML=h;
+ var k='<tr><th>Khóa</th><th>Gói</th><th>Hạn</th><th>Tạo lúc</th><th>Chuyển hôm nay</th><th></th></tr>';
+ r.keys.forEach(function(x){k+='<tr data-id="'+x.id+'"><td><code>SQK-'+esc(x.h)+'…</code></td><td>'+esc(x.plan.toUpperCase())+'</td><td>'+(x.expires_at?fmt(x.expires_at):'Vĩnh viễn')+'</td><td>'+fmt(x.created_at)+'</td><td>'+(x.switch_day===new Date().toISOString().slice(0,10)?x.switches:0)+'</td><td class="acts"><button class="mini" data-a="rv">Thu hồi</button></td></tr>';});
+ $('kTbl').innerHTML=k;
+ var sh='<tr><th>Thiết bị / nơi mở</th><th>Tạo lúc</th><th>Hoạt động gần nhất</th><th></th></tr>';(r.sessions||[]).forEach(function(x){sh+='<tr data-h="'+esc(x.h)+'"><td>'+esc(x.label||'(không tên)')+(x.owner?' <b class="own">CHỦ</b>':'')+(x.me?' <b class="ok">· phiên này</b>':'')+'</td><td>'+fmt(x.created_at)+'</td><td>'+fmt(x.last_seen)+'</td><td class="acts">'+(!r.owner||x.me?'':(x.owner?'<button class="mini" data-a="dn">Bỏ quyền chủ</button>':'<button class="mini" data-a="up">Đặt làm chủ</button><button class="mini" data-a="rs">Đăng xuất</button>'))+'</td></tr>';});
+ $('aTr').hidden=!r.owner;$('aOth').hidden=!r.owner;$('aOwn').textContent=r.owner?'Phiên này là admin CHỦ: không ai đăng xuất được bạn, bạn đăng xuất được các phiên khác.':'Phiên này là admin thường: quản lý mã và khóa được, nhưng không thêm hay đăng xuất phiên admin khác.';
+ $('sTbl').innerHTML=sh;$('sCount').textContent='('+(r.sessions||[]).length+')';}
+$('sTbl').onclick=async function(e){var b=e.target.closest('button');if(!b)return;var h=b.closest('tr').dataset.h,a=b.dataset.a,r;if(a==='rs'){if(!confirm('Đăng xuất phiên admin này?'))return;r=await call('/api/admin/revoke-session',{h:h});}else r=await call('/api/admin/set-owner',{h:h,owner:a==='up'});if(!r.ok)alert(r.msg);load();};
+$('aOth').onclick=async function(){if(!confirm('Đăng xuất mọi phiên admin khác, chỉ giữ phiên này?'))return;var r=await call('/api/admin/revoke-others');if(!r.ok)alert(r.msg);load();};
+$('cTbl').onclick=async function(e){var b=e.target.closest('button');if(!b)return;var id=b.closest('tr').dataset.id,a=b.dataset.a,r;
+ if(a==='cp')return copy(b.dataset.v,b);if(a==='ln')return copy(base+'#code='+encodeURIComponent(b.dataset.v),b);
+ if(a==='tg')r=await call('/api/admin/update',{id:id,active:b.dataset.v==='1'});
+ else if(a==='mx'){var v=prompt('Số lượt tối đa (để trống = không giới hạn):',b.dataset.v);if(v===null)return;r=await call('/api/admin/update',{id:id,max_uses:v.trim()});}
+ else if(a==='dl'){if(!confirm('Xóa mã này? Các khóa đã cấp từ mã vẫn giữ nguyên.'))return;r=await call('/api/admin/delete',{id:id});}
+ if(r&&!r.ok)alert(r.msg);load();};
+$('kTbl').onclick=async function(e){var b=e.target.closest('button');if(!b||b.dataset.a!=='rv')return;if(!confirm('Thu hồi khóa này? Người dùng sẽ về BASIC ngay.'))return;var r=await call('/api/admin/revoke-key',{id:b.closest('tr').dataset.id});if(!r.ok)alert(r.msg);load();};
+$('nGo').onclick=async function(){var e=$('nExp').value,r=await call('/api/admin/create',{code:$('nCode').value,plan:$('nPlan').value,max_uses:$('nMax').value,days:$('nDays').value,expires_at:e?new Date(e).getTime():'',note:$('nNote').value});
+ $('nMsg').className=r.ok?'ok':'err';$('nMsg').textContent=r.ok?'Đã tạo mã: '+r.code:r.msg;if(r.ok){$('nCode').value='';load();}};
+$('aReload').onclick=load;
+$('aTr').onclick=async function(){var r=await call('/api/admin/transfer');if(!r.ok)return alert(r.msg);var l=base.replace('index.html','admin.html')+'#transfer='+r.transfer;
+ $('aTrOut').innerHTML='Link thêm thiết bị (dùng 1 lần, hết hạn sau '+r.minutes+' phút; phiên này vẫn giữ quyền). Mở link ở nơi muốn thêm: <code>'+esc(l)+'</code> <button class="mini" id="aTrC">Sao chép</button>';$('aTrC').onclick=function(){copy(l,this);};};
+async function start(){load();}
+(async function(){var m=location.hash.match(/transfer=([^&]+)/);
+ if(m){history.replaceState(null,'',location.pathname+location.search);var r=await call('/api/admin/accept',{transfer:decodeURIComponent(m[1]),label:LBL});if(r.ok){tok=r.token;localStorage.setItem(TK,tok);sessionStorage.setItem('sq_fx','admin');location.reload();return;}else{login(true,r.msg);return;}}
+ if(tok)load();else login(true);})();
+
+(function(){var A=SQ.admin;function ls(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+ function paint(){var on=A.on(),p=ls('sq_adm_plan')||'';$('tSw').setAttribute('aria-checked',on?'true':'false');$('tSw').classList.toggle('on',on);
+  $('tOnTxt').textContent=on?'Đang BẬT: header hiện ADMIN và gói thử có hiệu lực.':'Đang TẮT tạm thời: web hoạt động như người dùng thường. Lối vào admin nằm ở chân trang.';
+  $('tPlanRow').classList.toggle('t-off',!on);[].forEach.call($('tSeg').children,function(b){b.classList.toggle('on',b.dataset.p===p);});
+  $('tEff').textContent='Gói đang áp dụng: '+SQ.get().toUpperCase()+(A.plan()?' (gói thử)':'');}
+ function done(m){$('tMsg').className='ok';$('tMsg').textContent=m;paint();}
+ $('tSw').onclick=function(){A.setOn(!A.on());location.reload();};
+ $('tSeg').onclick=function(e){var b=e.target.closest('button');if(!b)return;A.setPlan(b.dataset.p);location.reload();};
+ $('tWipe').onclick=function(){if(!confirm('Xóa gói, khóa và gói thử đã lưu ở trình duyệt này? Bạn sẽ về BASIC và nhập lại mã được.'))return;A.wipe();location.reload();};
+ $('tUse').onclick=function(){A.resetUsage();done('Đã reset lượt chấm hôm nay.');};
+ $('tDev').onclick=function(){if(!confirm('Đổi mã thiết bị và xóa gói đang lưu? Nhập lại mã cũ sẽ trừ thêm 1 lượt.'))return;A.newDevice();A.wipe();location.reload();};
+ $('tBk').onclick=function(){var o={};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k.indexOf('sq_')===0)o[k]=localStorage.getItem(k);}}catch(e){}
+  var t='SQBK1:'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));var b=this;navigator.clipboard.writeText(t).then(function(){b.textContent='Đã sao chép';setTimeout(function(){b.textContent='Sao chép bản sao lưu';},1500);},function(){prompt('Sao chép thủ công:',t);});};
+ $('tRsGo').onclick=function(){var v=$('tRs').value.trim(),o;try{if(v.indexOf('SQBK1:')!==0)throw 0;o=JSON.parse(decodeURIComponent(escape(atob(v.slice(6)))));}catch(e){$('tMsg').className='err';$('tMsg').textContent='Bản sao lưu không hợp lệ.';return;}
+  if(!confirm('Khôi phục sẽ ghi đè dữ liệu của trình duyệt này. Tiếp tục?'))return;
+  try{Object.keys(o).forEach(function(k){if(k.indexOf('sq_')===0)localStorage.setItem(k,String(o[k]));});}catch(e){}location.reload();};
+ paint();})();
+</script><script>if(localStorage.getItem('sq_admin')&&sessionStorage.getItem('sq_fx')==='admin'){sessionStorage.removeItem('sq_fx');setTimeout(function(){sqUnlock({ok:true,plan:'admin',admin:true});},350);}</script><script>
+(function(){var DK='SQK-DEMO-0000-0000-XXXX';
+document.getElementById('fxInv').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!window.sqInvite)return;var i=b.dataset.i,o={kind:'code',val:'SQ-DEMO-2026',preview:true,ci:{ok:true,plan:i,left:null,days:30,until:null}};
+ if(i==='promax'){o.ci.left=1;o.ci.days=null;}else if(i==='plus'){o.ci.left=12;}else if(i==='key'){o={kind:'keycode',val:'SQK-DEMO-0000-0000-XXXX',preview:true};}else if(i==='bad'){o.ci={ok:false,msg:'Mã không đúng hoặc đã bị vô hiệu hóa.'};}
+ var c=sqInvite(o);if(!c)return;c.no.onclick=c.close;c.go.onclick=function(){c.msg.className='bc-msg ok';c.msg.textContent='Đây là bản xem thử, không kích hoạt thật.';};});
+
+document.getElementById('fxLoss').addEventListener('click',function(e){var b=e.target.closest('button');if(b&&window.SQ_FX)SQ_FX.loss(b.dataset.f,b.dataset.t);});
+document.getElementById('fxGet').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!window.sqUnlock)return;var k=b.dataset.k,r={ok:true,preview:true,plan:'plus',key:DK};
+ if(k==='basic'||k==='plus'||k==='promax'){r.plan=k;if(k==='plus')r.until=Date.now()+7*864e5;}
+ else if(k==='admin'){r={ok:true,preview:true,admin:true,plan:'promax'};}
+ else if(k==='low'){r.plan='plus';r.max=50;r.left=3;r.input='SQ-DEMO';}
+ else if(k==='one'){r.plan='promax';r.max=1;r.left=0;r.input='SQ-DEMO';}
+ else if(k==='key'){r.plan='promax';r.isKey=true;}
+ sqUnlock(r);});
+})();
+</script>
+<script src="js/contrib-admin.js?v=4"></script><script src="js/quest.js?v=rk1"></script><script src="js/rankup.js?v=1"></script><script>(function(){var g=document.getElementById("arGrid"),box=document.getElementById("aRank"),L=document.getElementById("aLogin");SQR.R.forEach(function(r,i){var b=document.createElement("button");b.type="button";b.className="ar-b";b.innerHTML=SQR.icon(i,34)+"<span>"+(i+1)+". "+r[1]+"</span>";b.onclick=function(){sqRankUp(i,{preview:true});};g.appendChild(b);});function sync(){box.hidden=!!L&&!L.hidden;}sync();if(L)new MutationObserver(sync).observe(L,{attributes:true,attributeFilter:["hidden"]});})();</script></body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="vi" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Nhập bài · Sử Quán</title><link rel="icon" href="asset/favicon.png"><script>document.documentElement.classList.add("is-ntz")</script><link rel="stylesheet" href="css/style.css?v=2"><link rel="stylesheet" href="css/ntz.css?v=1t"><link rel="stylesheet" href="css/su.css?v=rr10"><link rel="stylesheet" href="css/layouts.css?v=1t"></head>
+<body data-page="grade"><main class="wrap">
+<header class="pg-head"><div class="eyebrow">Chấm đề tự động</div><h1 class="pg-title">NHẬP BÀI</h1><p>Dán toàn bộ đề (đúng định dạng bạn hay copy) vào ô bên dưới rồi bấm Chấm, kết quả hiện ngay.</p></header>
+<div class="g-grid">
+<section class="glass g-main"><div class="g-bar"><b>CHẤM ĐỀ</b><span class="quota" id="quota"></span></div>
+<div id="out"></div>
+<textarea id="inp" placeholder="Dán đề vào đây..."></textarea>
+<div class="opts"><label><input type="checkbox" id="autoPaste"> Tự động dán từ clipboard</label><label><input type="checkbox" id="autoRun"> Tự chấm ngay sau khi dán</label></div>
+<div class="row"><button onclick="run()">✅ Chấm đáp án</button><button class="btn2" onclick="pasteNow(true)">📋 Dán từ clipboard</button></div>
+<div id="pstatus" role="status"></div>
+<div class="ntz-mount"></div></section>
+<aside class="glass g-side"><h3>Chấm nhanh trong 3 bước</h3>
+<ol class="g-steps"><li>Copy toàn bộ đề từ trang thi.</li><li>Dán vào ô bên trái, bấm nút mũi tên (hoặc Ctrl + Enter).</li><li>Xem đáp án dạng thẻ phía trên ô nhập.</li></ol>
+<div class="g-up"><b>Muốn chấm không giới hạn?</b><p>PLUS mở chấm không giới hạn, tự động dán clipboard và tự chấm (chuột phải nút gửi).</p><a class="btn" href="index.html#goi">Xem gói PLUS</a></div></aside>
+</div>
+<div id="notice"></div></main>
+<script src="js/sq-config.js?v=2"></script><script src="js/plans.js?v=lf2"></script><script src="js/config.js?v=2"></script>
+<script>CONFIG.features={autoPaste:SQ.rank()>=1,ntzUi:true,ntzComposer:true,ntzResultTop:true,ntzClearUndo:true,ntzCards:true,ntzCardSettings:true,ntzAutoLock:SQ.rank()<1,notice:false};CONFIG.output.part1PerLine=8;</script>
+<script src="data/answers.js"></script><script src="data/statements.js"></script><script src="js/lessons.js?v=4"></script><script src="js/contrib.js?v=21"></script><script>SQC.inject()</script><script src="data/link-grader.js?v=2"></script><script src="js/app.js?v=2"></script><script src="js/ntz-cards.js"></script><script src="js/ntz-ui.js"></script><script src="js/ntz-settings.js"></script><script src="js/ntz-layouts.js?v=1"></script><script src="js/ntz-sentence.js?v=1"></script><script src="js/ntz-focus.js?v=3"></script><script src="js/grade-extra.js?v=1"></script><script src="js/site.js?v=lf4"></script><script src="js/theme-presets.js?v=3"></script><script src="js/theme.js?v=4"></script>
+<script>if(SQ.rank()<1){var pb=document.querySelector('.ntz-tools .ntz-ghost');if(pb)pb.style.display='none';}</script>
+<script>(function(){var _run=run,q=document.getElementById('quota');
+function upd(){q.textContent=SQ.get()==='basic'?'BASIC: còn '+SQ.left()+'/'+SQ.LIMIT+' lượt chấm hôm nay':'Gói '+SQ.get().toUpperCase()+': không giới hạn';}
+window.run=function(){if(document.getElementById('inp').value.trim()&&!SQ.consume()){document.getElementById('out').innerHTML='<div class="lock">Bạn đã dùng hết '+SQ.LIMIT+' lượt chấm miễn phí hôm nay. <a href="index.html#kich-hoat">Nâng cấp PLUS</a> để chấm không giới hạn.</div>';upd();return;}_run();upd();};upd();})();</script><script>SQC.modeBar(document.querySelector(".ntz-set-body")||document.querySelector(".g-main"))</script><script src="js/ntz-fit.js?v=2"></script></body></html>

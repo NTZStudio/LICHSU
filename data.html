@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="vi" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Dữ liệu · Sử Quán</title><link rel="icon" href="asset/favicon.png"><link rel="stylesheet" href="css/style.css?v=2"><link rel="stylesheet" href="css/su.css?v=rr10"><link rel="stylesheet" href="css/rankup.css?v=1u"><link rel="stylesheet" href="css/sqdoc.css?v=1t"></head>
+<body data-page="data"><main class="wrap">
+<header class="pg-head"><div class="eyebrow">Quản lý gói</div><h1 class="pg-title">DỮ LIỆU</h1><p>Xem gói đang dùng, kích hoạt mã hoặc khôi phục gói bằng khóa, chuyển gói sang trình duyệt khác và hủy kích hoạt.</p></header>
+<nav class="d-tabs" id="dTabs"><button type="button" data-t="pack" class="on">PACK</button><button type="button" data-t="rank">RANK</button><button type="button" data-t="contrib">CONTRIBUTOR</button><button type="button" data-t="my">MYPROJECT</button><button type="button" data-t="set">SETTING</button></nav><div id="tContrib" hidden></div><div id="tMy" hidden></div><div id="tSet" hidden></div>
+<div id="tPack">
+<section class="glass d-box"><h3>Gói hiện tại</h3>
+<div class="d-plan"><span id="dPlan" class="d-big">…</span><span id="dUntil" class="d-sub"></span></div>
+<div id="dNote" class="d-sub"></div></section>
+<section class="glass gate" id="gate">
+<div class="gate-head"><div><div class="ac-eyebrow">KÍCH HOẠT · KHÔI PHỤC</div><h2>Nhập mã hoặc khóa gói</h2></div><span class="ac-cur">Gói hiện tại <b id="gCur"></b></span></div>
+<div class="gate-modes" id="gModes">
+<div class="gm" id="gmCode"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M13 6v12" stroke-dasharray="2 2.5"/></svg></i><b>Mã mở gói</b><span>Do admin cấp, mở PLUS hoặc PROMAX mới. Có số lượt và hạn dùng.</span></div>
+<div class="gm" id="gmKey"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></svg></i><b>Khóa gói <code>SQK-…</code></b><span>Lấy lại gói đã kích hoạt ở nơi khác. Nơi cũ mất gói ngay.</span></div></div>
+<div class="gate-form"><div class="ac-lab"><label for="dIn">Mã hoặc khóa</label><span class="ac-type" id="gType">CHƯA NHẬP</span></div>
+<div class="ac-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></svg><input id="dIn" placeholder="Mã mở gói hoặc SQK-…" autocomplete="off" spellcheck="false"><button type="button" class="cf-paste" title="Dán từ bộ nhớ tạm">Dán</button><button type="button" class="gate-x" id="gX" title="Xóa" hidden>×</button></div>
+<div class="gate-note" id="gNote"></div>
+<div class="gate-act"><button type="button" class="ac-go" id="dGo"><span id="gGoT">Kích hoạt</span> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button><button type="button" class="btn alt" id="gCheck" hidden>Kiểm tra mã</button></div>
+<div id="dMsg2" role="status"></div></div></section>
+<section class="glass d-box" id="dKeyBox" hidden><h3>Khóa gói của bạn</h3>
+<p class="d-sub">Khóa này là gói của bạn. Nhập nó ở trình duyệt khác thì gói chuyển sang đó và trình duyệt này mất gói ngay. Chỉ gửi cho người bạn muốn chuyển gói.</p>
+<div class="d-key"><code id="dKey">••••</code><button type="button" class="mini" id="bShow">Hiện</button><button type="button" class="mini" id="bCopy">Sao chép khóa</button></div>
+<div class="d-actions"><button type="button" class="btn" id="bLink">Sao chép link kích hoạt</button><button type="button" class="btn alt" id="bNew">Tạo khóa mới</button><button type="button" class="btn alt danger" id="bOff">Hủy kích hoạt</button></div>
+<p class="d-sub">Tạo khóa mới sẽ làm khóa cũ và mọi link đã gửi mất hiệu lực ngay. Hủy kích hoạt đưa trình duyệt này về BASIC và không hoàn lại lượt của mã.</p>
+<div id="dMsg" role="status"></div></section>
+
+<section class="pc-wrap"><div class="pc-head"><div class="ac-eyebrow">ƯU ĐÃI CÁC GÓI</div><h2>Mỗi gói mở ra điều gì</h2></div><div class="pc-grid"><article class="pc basic" data-p="basic"><div class="pc-top"><i class="pc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M9 8h7"/></svg></i><span class="pc-chip" hidden></span></div><h3>BASIC</h3><div class="pc-price">Miễn phí</div><p class="pc-tl">Tự học, tự tra, không tốn một đồng.</p><ul><li>Tự tra cứu đủ Phần I và Phần II, không giới hạn</li><li>QUEST: luyện nhanh câu ngẫu nhiên, chấm ngay, có combo và bảng điểm</li><li>QUEST: chế độ HARDCORE (đếm giờ, tùy chọn 1 mạng, chỉnh thời gian)</li><li>Bảng 20 thứ hạng có icon riêng, càng lên cao càng tới Gargantua, kèm đặc quyền (thưởng điểm, 50/50, khiên combo, mạng dự phòng)</li><li>SAVE: lưu số lần đúng/sai từng câu kèm ID, chỉ trên thiết bị của bạn</li><li>2 lượt chấm đề (GRADE) mỗi ngày</li><li>Dán đề thủ công</li></ul><div class="pc-act"></div></article><article class="pc plus" data-p="plus"><div class="pc-top"><i class="pc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></i><span class="pc-chip" hidden></span></div><h3>PLUS</h3><div class="pc-price">399.000₫</div><p class="pc-tl">Cày điểm không giới hạn, khỏi đếm lượt.</p><ul><li>Gồm mọi tính năng của BASIC</li><li>QUEST: chọn một hoặc nhiều bài để ôn tập</li><li>QUEST: chế độ NIGHTMARE (1 mạng, câu dày đặc, điểm tăng dần)</li><li>Chấm đề không giới hạn mỗi ngày</li><li>Tự động dán từ clipboard</li><li>Tự chấm: dán là ra đáp án, khỏi bấm nút</li></ul><div class="pc-act"></div></article><article class="pc promax" data-p="promax"><div class="pc-top"><i class="pc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.3"/><path d="M5.4 10.6a7 7 0 0 1 13.2 0"/><path d="M7.6 15.4a6 6 0 0 0 8.8 0"/><path d="M1.8 12h5.6M16.6 12h5.6"/></svg></i><span class="pc-chip" hidden></span></div><h3>PROMAX</h3><div class="pc-price">799.000₫</div><p class="pc-tl">Trọn bộ, học thông minh nhất.</p><ul><li>Gồm mọi tính năng của PLUS</li><li>Tra cứu nâng cao: câu đầy đủ, đáp án đúng/sai, ID câu</li><li>Chia theo bài, ưu tiên bài mới</li><li>Độ chắc chắn và ước tính điểm khi chấm</li><li>Tùy biến thẻ đáp án: kiểu khung, màu từng đáp án, sắp xếp từng câu</li><li>Giao diện đáp án mới: 4 kiểu Phần I, 4 kiểu Phần II, có xem trước</li><li>Chế độ SENTENCE: hiện từng câu kiểu Azota, tự tra ID câu hỏi</li><li>Bài trọng tâm: ưu tiên đáp án của bài bạn chọn khi chấm</li><li>Tự cuộn tới kết quả để thấy đủ các câu trong một màn hình</li></ul><div class="pc-act"></div></article></div></section>
+</div>
+<div id="tRank" hidden></div></main>
+<script src="js/sq-config.js?v=2"></script><script src="js/plans.js?v=lf2"></script><script src="js/unlock.js?v=lf3qrst"></script><script src="js/site.js?v=lf4"></script><script src="js/theme-presets.js?v=3"></script><script src="js/theme.js?v=4"></script>
+<script>
+var $=function(i){return document.getElementById(i);},I=SQ.info(),shown=false,fmt=function(t){return new Date(t).toLocaleString('vi-VN');};
+function link(){return SQ.site('index.html')+'#keycode='+I.key;}
+function mask(k){return k.slice(0,8)+'••••••••••••'+k.slice(-4);}
+function paintPC(){var R={basic:0,plus:1,promax:2},cur=R[I.plan]||0;document.querySelectorAll('.pc').forEach(function(c){var p=c.dataset.p,r=R[p],chip=c.querySelector('.pc-chip'),act=c.querySelector('.pc-act');c.classList.toggle('on',r===cur);chip.hidden=r>cur;chip.className='pc-chip'+(r===cur?' now':'');chip.textContent=r===cur?'ĐANG DÙNG':'ĐÃ BAO GỒM';
+ act.innerHTML=r>cur?'<a class="btn pc-go" href="#gate">Mở khóa '+p.toUpperCase()+'</a>':'';});}
+function paint(){I=SQ.info();$('gCur').textContent=I.plan.toUpperCase();paintPC();$('dPlan').textContent=I.plan.toUpperCase();
+ $('dUntil').textContent=I.plan==='basic'?'':(I.server?(I.until?'Hết hạn: '+fmt(I.until):'Vĩnh viễn'):'');
+ $('dNote').textContent=!I.server?'Chưa kết nối máy chủ mã: gói lưu cục bộ, chưa có khóa chuyển thiết bị.':(I.plan==='basic'?'Bạn đang dùng BASIC. Nhập mã bên dưới để mở PLUS hoặc PROMAX.':'');
+ $('dKeyBox').hidden=!(I.server&&I.hasKey);$('dKey').textContent=I.hasKey?(shown?I.key:mask(I.key)):'';$('bShow').textContent=shown?'Ẩn':'Hiện';}
+function copy(t,el){navigator.clipboard.writeText(t).then(function(){el.textContent='Đã sao chép';setTimeout(paint,1200);},function(){prompt('Sao chép thủ công:',t);});}
+$('bShow').onclick=function(){shown=!shown;paint();};
+$('bCopy').onclick=function(){copy(I.key,this);};
+$('bLink').onclick=function(){var b=this;if(!confirm('Ai mở link này và bấm Kích hoạt sẽ nhận gói, còn trình duyệt này mất gói ngay. Tiếp tục sao chép?'))return;navigator.clipboard.writeText(link()).then(function(){b.textContent='Đã sao chép link';setTimeout(function(){b.textContent='Sao chép link kích hoạt';},1500);},function(){prompt('Sao chép thủ công:',link());});};
+$('bNew').onclick=async function(){if(!confirm('Tạo khóa mới? Khóa cũ và mọi link đã gửi sẽ mất hiệu lực ngay.'))return;var r=await SQ.rotate();$('dMsg').className=r.ok?'ok':'err';$('dMsg').textContent=r.ok?'Đã tạo khóa mới. Hãy lưu lại khóa này.':r.msg;shown=true;paint();};
+$('bOff').onclick=async function(){if(!confirm('Hủy kích hoạt? Trình duyệt này về BASIC, khóa ngừng hoạt động ngay và không hoàn lại lượt của mã.'))return;var r=await SQ.deactivate();$('dMsg').className=r.ok?'ok':'err';$('dMsg').textContent=r.ok?'Đã hủy kích hoạt.':r.msg;if(r.ok)setTimeout(function(){location.reload();},700);};
+var gk='';
+function kindOf(v){v=String(v||'').replace(/\s+/g,'');return!v?'':(/^SQK-/i.test(v)?'key':'code');}
+function upd(){var v=$('dIn').value;gk=kindOf(v);var t=$('gType');
+ t.className='ac-type'+(gk?' '+gk:'');t.textContent=gk==='key'?'KHÓA GÓI':gk==='code'?'MÃ MỞ GÓI':'CHƯA NHẬP';
+ $('gModes').dataset.k=gk;$('gmCode').classList.toggle('on',gk==='code');$('gmKey').classList.toggle('on',gk==='key');
+ $('gGoT').textContent=gk==='key'?'Khôi phục gói':'Kích hoạt';$('gX').hidden=!v;$('gCheck').hidden=!(gk==='code'&&SQ.API);
+ var n=$('gNote');n.className='gate-note';n.textContent=gk==='key'?'Gói sẽ chuyển về trình duyệt này, nơi đang dùng khóa sẽ mất gói ngay (tối đa 3 lần chuyển mỗi ngày).':gk==='code'?'Kích hoạt sẽ trừ 1 lượt của mã. Bấm Kiểm tra mã để xem gói và số lượt trước.':'Dán khóa SQK-… để khôi phục gói, hoặc nhập mã mở gói để mở gói mới.';}
+$('dIn').addEventListener('input',upd);$('gX').onclick=function(){$('dIn').value='';$('dMsg2').className='';$('dMsg2').textContent='';upd();$('dIn').focus();};
+document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.cf-paste'))setTimeout(upd,500);});
+$('gCheck').onclick=async function(){var b=this,n=$('gNote');b.disabled=true;var r=await SQ.codeInfo($('dIn').value);b.disabled=false;
+ if(r.ok){n.className='gate-note ok';n.textContent='Mã hợp lệ: '+r.plan.toUpperCase()+(r.left==null?' · không giới hạn lượt':' · còn '+r.left+' lượt')+(r.days?' · gói '+r.days+' ngày':'')+(r.until?' · nhập trước '+new Date(r.until-1).toLocaleDateString('vi-VN'):'');}
+ else{n.className='gate-note err';n.textContent=r.msg||'Không kiểm tra được mã.';}};
+async function go(){var v=$('dIn').value,m=$('dMsg2');if(!v.trim()){m.className='err';m.textContent='Hãy nhập mã hoặc khóa.';return;}
+ var b=$('dGo');b.disabled=true;var r=await SQ.activate(v);b.disabled=false;
+ if(!r.ok){m.className='err';m.textContent=r.msg;return;}
+ if(r.same){m.className='ok';m.textContent='Đây đã là khóa đang dùng ở trình duyệt này.';return;}
+ m.className='ok t-'+r.plan;m.textContent='Đã kích hoạt gói '+r.plan.toUpperCase()+(r.until?' đến hết '+new Date(r.until-1).toLocaleDateString('vi-VN'):'')+'!';
+ r.input=v;if(window.sqUnlock)sqUnlock(r);else setTimeout(function(){location.reload();},800);}
+$('dGo').onclick=go;$('dIn').onkeydown=function(e){if(e.key==='Enter')go();};
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.pc-go');if(!a)return;e.preventDefault();$('gate').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){$('dIn').focus();},450);});
+paint();upd();
+</script><script src="js/scroll-hint.js?v=1"></script><script src="js/quest.js?v=rk1"></script><script src="js/rank-page.js?v=1"></script>
+<script src="js/settings-ui.js?v=3"></script><script src="js/sqdoc.js?v=1"></script><script src="js/contrib.js?v=21"></script><script>(function(){var T={pack:"tPack",rank:"tRank",contrib:"tContrib",my:"tMy",set:"tSet"},done={};function show(t,arg){Object.keys(T).forEach(function(k){document.getElementById(T[k]).hidden=k!==t;});if(t==="rank")sqRankPage(document.getElementById("tRank"));if(t==="contrib")SQC.mountContrib(document.getElementById("tContrib"));if(t==="my")SQC.mountMy(document.getElementById("tMy"));if(t==="set")sqSettingsMount(document.getElementById("tSet"));[].forEach.call(document.querySelectorAll("#dTabs button"),function(b){b.className=b.dataset.t===t?"on":"";});if(!arg)history.replaceState(null,"",t==="pack"?location.pathname+location.search:"#"+t);}document.getElementById("dTabs").onclick=function(e){var b=e.target.closest("button");if(b)show(b.dataset.t);};var h=location.hash.slice(1);if(/^community/.test(h)){location.replace("lookup.html#"+h);return;}if(T[h]&&h!=="pack")show(h);})();</script></body></html>

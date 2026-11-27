@@ -1,0 +1,140 @@
+/* LOOKUP nâng cao kiểu Azota: trái = câu hỏi, phải = chọn bài / phần / số câu. Nạp sau su.css. */
+.bank #advList.az{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0}
+.bank #advList.az[hidden]{display:none}
+.az [hidden]{display:none!important}
+.az-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.az-side{position:sticky;top:64px;display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 80px);min-width:0}
+.az-box{padding:12px;background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 45%,rgba(18,18,28,.4));-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--glb)}
+.az-gbox{flex:1;min-height:0;display:flex;flex-direction:column}
+.az-gbox #azGrid{overflow-y:auto;min-height:0;padding-right:2px}
+.az-sh{margin-bottom:8px;color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.16em}
+.az-side .bank-chips{display:flex;flex-wrap:wrap;gap:6px}
+.az-side .bank-chip{padding:6px 12px;font-size:13px}
+.az-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.az-tab{margin:0;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--glb);background:rgba(255,255,255,.05);color:var(--text);font-size:14px;font-weight:700;cursor:pointer}
+.az-tab small{color:var(--sub);font-size:11px;font-weight:400}
+.az-tab.is-on{background:var(--btn);border-color:transparent;color:#1a1204}.az-tab.is-on small{color:#3b2a0a}
+.az-cgh{margin:10px 0 6px;color:var(--sub);font-size:12px}
+.az-cg:first-child .az-cgh{margin-top:0}
+.az-one .az-cgh{display:none}
+.az-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.az-n{margin:0;padding:7px 0;border:1px solid var(--glb);background:rgba(255,255,255,.04);color:var(--text);font-size:13px;font-variant-numeric:tabular-nums;cursor:pointer}
+.az-n:hover{border-color:rgba(255,255,255,.45)}
+.az-n.seen{background:rgba(63,179,107,.16);border-color:rgba(63,179,107,.55)}
+.az-n.cur{background:rgba(var(--ar),.3);border-color:var(--a2);font-weight:800}
+.az-leg{display:flex;align-items:center;gap:6px;margin-top:10px;color:var(--sub);font-size:11px}
+.az-leg i{width:10px;height:10px;border:1px solid}.az-leg .cur{background:rgba(var(--ar),.5);border-color:var(--a2)}.az-leg .seen{margin-left:8px;background:rgba(63,179,107,.4);border-color:#3fb36b}
+/* câu hỏi */
+.az-sech{margin:6px 0 0;padding-left:10px;border-left:3px solid var(--a2);font-size:15px;letter-spacing:.02em}
+.az-sec{display:flex;flex-direction:column;gap:12px}
+.az-q{scroll-margin-top:76px;padding:16px 18px;background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03) 45%,rgba(18,18,28,.42));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--glb)}
+.az-q.flash{animation:azf 1.4s ease-out}
+@keyframes azf{0%,35%{border-color:var(--a2);box-shadow:0 0 0 2px rgba(var(--ar),.35)}100%{border-color:var(--glb);box-shadow:none}}
+.az-qh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.az-no{padding:3px 12px;background:var(--btn);color:#1a1204;font-weight:800;font-size:14px}
+.az-id{margin:0;padding:2px 8px;border:1px solid rgba(77,163,255,.45);background:transparent;color:#8fc2ff;font-size:11px;font-variant-numeric:tabular-nums;cursor:pointer}
+.az-qt,.az-tl{white-space:pre-line;line-height:1.65;margin-bottom:12px}
+.az-tl{padding:10px 12px;border-left:3px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);font-size:.95em;color:#d8d4cc}
+.az-opts{display:flex;flex-direction:column;gap:8px}
+.az-o{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border:1px solid var(--glb);background:rgba(255,255,255,.03)}
+.az-l{flex:none;display:grid;place-items:center;width:28px;height:28px;border:1px solid rgba(255,255,255,.3);font-weight:700;font-size:13px}
+.az-ot{flex:1;min-width:0;line-height:1.5;padding-top:3px}
+.az-o.ok{border-color:#22c55e;background:rgba(34,197,94,.14)}.az-o.ok .az-l{background:#22c55e;border-color:#22c55e;color:#06210f}
+.az-m{flex:none;padding-top:3px;font-weight:800;color:#4ade80}
+.az-tf{flex:none;min-width:52px;padding:3px 8px;text-align:center;font-size:12px;font-weight:800}
+.az-s.is-true{border-color:rgba(34,197,94,.7)}.az-s.is-true .az-tf{background:#22c55e;color:#06210f}
+.az-s.is-false{border-color:rgba(239,68,68,.7)}.az-s.is-false .az-tf{background:#ef4444;color:#fff}
+.az-exp{margin-top:14px;padding:10px 12px;border:1px dashed rgba(255,255,255,.2)}
+.az-exp h4{margin:0 0 6px;color:var(--accent);font-size:11px;letter-spacing:.16em}
+.az-expt{white-space:pre-line;line-height:1.6}.az-exp.is-empty .az-expt{color:var(--sub);font-size:.9em}
+@media (max-width:900px){
+ .bank #advList.az{grid-template-columns:minmax(0,1fr)}
+ .az-side{position:static;order:-1;max-height:none}.az-gbox #azGrid{max-height:200px}
+ .az-grid{grid-template-columns:repeat(8,minmax(0,1fr))}
+}
+/* v2: trang dàn rộng hai bên, nút BASIC/ADVANCE dưới tiêu đề, ô tìm kiếm ở cột phải */
+.wrap.bank{max-width:none;margin:0;padding-left:clamp(16px,2.5vw,40px);padding-right:clamp(16px,2.5vw,40px)}
+.pg-head .bank-chips{margin-top:14px;gap:8px}
+.pg-head .bank-chip{padding:7px 20px;font-size:13px;font-weight:700;letter-spacing:.14em}
+.bank #advList.az{grid-template-columns:minmax(0,1fr) 340px}
+.az-sbox .bank-search{width:100%}
+.az-sbox .bank-count{margin:8px 0 0;font-size:12px}
+.az-dim{color:var(--sub)}
+@media (max-width:900px){.bank #advList.az{grid-template-columns:minmax(0,1fr)}}
+/* v3: cột phải rộng 40% chiều ngang, lưới ô số tự chia cột theo bề rộng */
+.bank #advList.az{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
+.az-grid{grid-template-columns:repeat(auto-fill,minmax(46px,1fr))}
+@media (max-width:900px){.bank #advList.az{grid-template-columns:minmax(0,1fr)}.az-grid{grid-template-columns:repeat(auto-fill,minmax(40px,1fr))}}
+/* v4: BASIC dùng cùng khung Azota với ADVANCE */
+.bank #basicLists.az{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px;align-items:start;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;margin:0}
+.az-tabs3{grid-template-columns:repeat(3,1fr)}
+@media (max-width:900px){.bank #basicLists.az{grid-template-columns:minmax(0,1fr)}}
+/* v5: sửa tràn danh sách câu (BASIC dùng #bGrid) - khung lưới tự co theo chiều cao còn lại và cuộn được */
+.az-side{overflow:hidden}
+.az-box{flex:none}
+.az-gbox{flex:1 1 auto;min-height:140px;overflow:hidden}
+.az-gbox>div:nth-child(2){flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
+.az-gbox>.az-sh,.az-gbox>.az-leg{flex:none}
+.az-gbox>div:nth-child(2)::-webkit-scrollbar{width:6px}
+.az-gbox>div:nth-child(2)::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25)}
+@media (max-width:900px){
+ .az-side{overflow:visible}
+ .az-gbox{flex:none}
+ .az-gbox>div:nth-child(2){max-height:220px}
+}
+/* v6: BASIC = bạc ánh kim, ADVANCE = vàng (đặc quyền PROMAX). Màu đi theo biến, sửa ở 2 khối dưới đây. */
+.az{--azb:var(--btn);--azc:var(--accent);--azi:#1a1204;--azl:var(--a2);--azcur:rgba(var(--ar),.3);--azbd:rgba(255,190,70,.24);--azsh:inset 0 1px 0 rgba(255,255,255,.35)}
+#basicLists.az{--azb:linear-gradient(135deg,#f6f8fa 0%,#c5cbd3 28%,#8f969f 55%,#dfe3e8 78%,#9ca3ac 100%);--azc:#cfd5dc;--azi:#14171b;--azl:#c3cad2;--azcur:rgba(196,203,212,.3);--azbd:rgba(205,212,222,.24);--azsh:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.28)}
+.az .az-sh,.az .az-exp h4{color:var(--azc)}
+.az .az-no,.az .az-tab.is-on,.az-side .bank-chip.is-on{background:var(--azb);color:var(--azi);border-color:transparent;box-shadow:var(--azsh)}
+.az .az-tab.is-on small{color:var(--azi);opacity:.7}
+.az .az-sech{border-left-color:var(--azl)}
+.az .az-n.cur{background:var(--azcur);border-color:var(--azl)}
+.az .az-leg .cur{background:var(--azcur);border-color:var(--azl)}
+.az .az-q.flash{animation:azf2 1.4s ease-out}
+@keyframes azf2{0%,35%{border-color:var(--azl);box-shadow:0 0 0 2px var(--azcur)}100%{border-color:var(--azbd);box-shadow:none}}
+.az .az-q,.az .az-box{border-color:var(--azbd)}
+.az .az-sbox .bank-search:focus{border-color:var(--azl);outline:none}
+/* nút chế độ dưới tiêu đề */
+#modeChips .bank-chip:nth-child(1){color:#cfd5dc}
+#modeChips .bank-chip:nth-child(2){color:var(--a1);border-color:rgba(255,190,70,.4)}
+.pg-head #modeChips .bank-chip:nth-child(1).is-on{background:linear-gradient(135deg,#f6f8fa 0%,#c5cbd3 28%,#8f969f 55%,#dfe3e8 78%,#9ca3ac 100%);color:#14171b;border-color:transparent;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(0,0,0,.28)}
+.pg-head #modeChips .bank-chip:nth-child(2).is-on{background:var(--btn);color:#1a1204;border-color:transparent;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+/* v7: chip bên phải đầu thẻ câu ở BASIC (tông bạc), không bấm được */
+#basicLists .az-id{color:#cfd5dc;border-color:rgba(205,212,222,.5);background:rgba(255,255,255,.05);cursor:default}
+#basicLists button.az-id{cursor:pointer}
+.az-qh .az-id{padding:3px 10px;font-size:12px}
+
+/* v8: CONTRIBUTOR / MYPROJECT dùng khung Azota.
+   Mặc định hiện danh sách file (thẻ trái + khung cuộn phải); bấm file mới mở bài, có nút quay lại và tìm trong file ở cột phải. */
+.bank #contribRoot.az,.bank #myRoot.az{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:16px;align-items:start;background:none;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;margin:0}
+.bank #contribRoot.az[hidden],.bank #myRoot.az[hidden]{display:none}
+.ct-nav{display:flex;flex-direction:column;gap:10px;flex:1 1 auto;min-height:0}
+.az-side>div[hidden]{display:none}
+.az-back{width:100%;margin:0 0 10px;padding:9px 12px;display:flex;align-items:center;gap:8px;border:1px solid var(--azl);background:rgba(255,255,255,.06);color:var(--text);font:700 13px system-ui;letter-spacing:.06em;cursor:pointer}
+.az-back:hover{background:var(--azcur)}
+.ct-rt{margin:0 0 4px;font-size:15px;line-height:1.35;word-break:break-word}
+.ct-rm{color:var(--sub);font-size:12px}
+/* thẻ file (cột trái, trạng thái danh sách) */
+.ct-fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-bottom:14px}
+.ct-file{margin:0;text-align:left;display:flex;flex-direction:column;gap:6px;padding:14px 16px;border:1px solid var(--azbd);background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03) 45%,rgba(18,18,28,.42));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--text);cursor:pointer;font:inherit}
+.ct-file:hover{border-color:var(--azl);box-shadow:0 0 0 1px var(--azcur)}
+.ct-file h4{margin:0;font-size:15px;line-height:1.35;word-break:break-word}
+.ct-ftag{align-self:flex-start;padding:2px 8px;background:var(--azb);color:var(--azi);font:800 10px system-ui;letter-spacing:.12em}
+.ct-fm{color:var(--sub);font-size:12px}
+.ct-fs{color:#cfc9bf;font-size:13px;line-height:1.5;max-height:3em;overflow:hidden}
+.ct-more{display:block;margin:10px auto 0}
+/* khung cuộn danh sách file (cột phải) */
+.ct-fl{display:flex;flex-direction:column;gap:6px}
+.ct-fi{margin:0;text-align:left;display:flex;flex-direction:column;gap:2px;padding:8px 10px;border:1px solid var(--glb);background:rgba(255,255,255,.04);color:var(--text);cursor:pointer;font:inherit}
+.ct-fi:hover{border-color:var(--azl);background:var(--azcur)}
+.ct-fi b{font-size:13px;line-height:1.35;word-break:break-word}.ct-fi small{color:var(--sub);font-size:11px}
+/* mở văn bản / bài cộng đồng */
+.ct-docbox{padding:16px 18px;border:1px solid var(--azbd);background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.03) 45%,rgba(18,18,28,.42));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);min-width:0;overflow-wrap:anywhere}
+.ct-fc{margin-bottom:8px;color:var(--sub);font-size:12px}
+.ct-frow{display:flex;gap:8px}.ct-frow .btn{margin:0;flex:1;padding:7px 10px;font-size:13px}
+mark.ct-hit{background:rgba(var(--ar),.35);color:inherit;padding:0 1px}
+mark.ct-hit.cur{background:var(--a2);color:#1a1204}
+@media (max-width:900px){.bank #contribRoot.az,.bank #myRoot.az{grid-template-columns:minmax(0,1fr)}.ct-fgrid{grid-template-columns:1fr}}
+.ct-fl .ct-fi,.ct-fl .ct-more{width:100%;box-sizing:border-box}.ct-fl .ct-more{text-align:center}
+.ct-file{width:100%;box-sizing:border-box}

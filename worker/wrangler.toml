@@ -1,0 +1,13 @@
+name = "sq-codes"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sq-codes"
+database_id = "DAN_ID_D1_VAO_DAY"   # lấy từ lệnh: npx wrangler d1 create sq-codes
+
+[vars]
+ADMIN_EPOCH = "1"          # đổi số này (và ADMIN_HASH) rồi deploy lại để hủy admin hiện tại
+ALLOWED_ORIGIN = "*"       # nên đổi thành https://ntzstudio.github.io (đúng tên miền web của bạn)
+# ADMIN_HASH là secret: npx wrangler secret put ADMIN_HASH
